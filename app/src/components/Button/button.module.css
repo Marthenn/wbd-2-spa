@@ -1,0 +1,64 @@
+.roundedButtonPurple {
+    background: linear-gradient(45deg, #0B07F7, #CB7BFF);
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.roundedButtonYellow {
+    background: linear-gradient(45deg, #F6A604, #FEFA48);
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.roundedButtonPink {
+    background: linear-gradient(45deg, #FB479A, #FFF5FA);
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.roundedButtonRed {
+    background: linear-gradient(45deg, #FF1C26, #FF575F);
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.roundedButtonGreen {
+    background: linear-gradient(45deg,#00BC71, #3DD598);
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.roundedButtonBlack {
+    background: #1F1F1F;
+    border-radius: 50px;
+    border: 0;
+    color: white;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px;
+}
+
+.primaryButtonRed {
+    color: white;
+    background: linear-gradient(45deg, #FF1C26, #FF575F);
+    margin: 10px;
+}
