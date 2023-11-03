@@ -1,0 +1,54 @@
+.userInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.userPhotoImg {
+    border-radius: 30px;
+    width: 25px;
+    height: 25px;
+}
+
+.userName {
+    margin: 0 10px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+}
+
+.logo {
+    width: 35px;
+    height: auto;
+    margin: 15px;
+}
+
+a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #1F1F1F;
+    height: min-content;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+a:hover {
+    opacity: 50%;
+}
+
+.toolBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}

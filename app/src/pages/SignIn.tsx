@@ -1,7 +1,8 @@
-import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, StyledEngineProvider } from '@mui/material'
+import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, StyledEngineProvider, CssBaseline } from '@mui/material'
 import { useNavigate, Navigate } from 'react-router-dom'
 import * as React from 'react';
 import theme from '../theme/theme';
+import logo from '../assets/logo.svg';
 
 const SignIn = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -10,8 +11,10 @@ const SignIn = () => {
       return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
+            <CssBaseline />
             <Grid container component="main" sx={{ height: '100vh' }}>
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid item xs={12} sm={6} md={4} component={Paper} elevation={6} square>
+                <img src={logo} alt="Logo" style={{ margin: '15px', width: '35px', height: 'auto' }} />
                 <Box
                     sx={{
                     my: 8,
@@ -61,7 +64,7 @@ const SignIn = () => {
                     <Grid container>
                         <Grid item>
                         <Link href="#" variant="body2">
-                            {"Don't have an account? Sign Up"}
+                            {"Don't have an account? Sign Up for Premium"}
                         </Link>
                         </Grid>
                     </Grid>
@@ -71,8 +74,8 @@ const SignIn = () => {
                 <Grid
                 item
                 xs={false}
-                sm={4}
-                md={7}
+                sm={6}
+                md={8}
                 sx={{
                     backgroundImage: `url(${require('../assets/SignIn.png')})`,
                     backgroundRepeat: 'no-repeat',
