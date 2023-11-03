@@ -1,10 +1,7 @@
-import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, CssBaseline, Avatar, FormControlLabel, Checkbox, StyledEngineProvider } from '@mui/material'
+import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, StyledEngineProvider } from '@mui/material'
 import { useNavigate, Navigate } from 'react-router-dom'
 import * as React from 'react';
 import theme from '../theme/theme';
-import PrimaryButtonRed from '../components/Button/PrimaryButtonRed';
-import RoundedButton from '../components/Button/RoundedButton';
-import { on } from 'events';
 
 const SignIn = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -14,7 +11,6 @@ const SignIn = () => {
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <Box
                     sx={{
@@ -58,6 +54,7 @@ const SignIn = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                         color='primary'
+                        onClick={handleSubmit}
                     >
                         Sign In
                     </Button>
