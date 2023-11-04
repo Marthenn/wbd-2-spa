@@ -26,7 +26,7 @@ const Navbar = ({
     }
     return (
         <AppBar
-            position="static"
+            position="fixed"
             color="secondary"
             elevation={0}
             sx={{

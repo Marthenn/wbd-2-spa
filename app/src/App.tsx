@@ -7,6 +7,7 @@ import {
 
 import SignIn from "./pages/SignIn"
 import SignUpPremium from "./pages/SignUpPremium"
+import AudioBooks from "./pages/AudioBooks"
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     path: "/SignUpPremium",
     element: <SignUpPremium />
   },
+  {
+    path: "/AudioBooks",
+    element: <AudioBooks/>
+  }
 ])
 
 const App = () => {

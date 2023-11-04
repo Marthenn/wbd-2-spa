@@ -3,6 +3,7 @@
     flex-direction: row;
     align-items: center;
     margin-right: 30px;
+    margin-left: auto;
 }
 
 .userPhotoImg {
