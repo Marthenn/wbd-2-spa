@@ -14,7 +14,7 @@ const NavbarSignIn = ({}: {}) => {
   >
     <Toolbar sx={{ flexWrap: 'wrap' }}>
       <img src={logo} className={styles.logo} alt="Logo"/>
-      <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5, marginLeft: 'auto' }} className={styles.toolBar}>
+      <Button href="/" variant="outlined" sx={{ my: 1, mx: 1.5, marginLeft: 'auto' }} className={styles.toolBar}>
         Sign In
       </Button>
     </Toolbar>

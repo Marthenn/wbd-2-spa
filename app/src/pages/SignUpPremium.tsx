@@ -2,11 +2,8 @@ import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, S
 import { useNavigate, Navigate } from 'react-router-dom'
 import * as React from 'react';
 import theme from '../theme/theme';
-import Navbar from '../components/NavBar/Navbar';
 import NavbarSignIn from '../components/NavBar/NavbarSignIn';
-import userPhoto from '../assets/user-placeholder.svg';
 import bgWave from '../assets/bg-wave.svg';
-import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import SignUpDialog from '../components/MembershipRequestDialog/SignUpDialog';
 import { useState } from 'react';
 
@@ -45,6 +42,16 @@ const SignUpPremium = () => {
     const handleClose = () => {
     setOpen(false);
     };
+
+    const handleButtonClick = (tierTitle: string) => {
+      if (tierTitle === 'Premium') {
+        handleOpen();
+      } else {
+        navigate('/your-redirect-url');
+      }
+    };
+
+    const navigate = useNavigate();
 
     return (
       <ThemeProvider theme={theme}>
@@ -130,7 +137,7 @@ const SignUpPremium = () => {
                   <CardActions>
                     <Button
                       fullWidth
-                      onClick={handleOpen}
+                      onClick={() => handleButtonClick(tier.title)}
                       variant={tier.buttonVariant as 'outlined' | 'contained'}
                     >
                       {tier.buttonText}

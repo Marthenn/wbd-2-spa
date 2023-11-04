@@ -28,6 +28,7 @@ const PaymentSuccessDialog = ({
             <Typography variant="h5">Pending approval</Typography>
         </Box>
         <Typography>Wait for the administrator to approve your request.</Typography>
+        <Typography>When approved confirmation will be sent to your email.</Typography>
       </DialogContent>
       <DialogActions style={{ padding: 20 }}>
         <Button variant="contained" color="primary" onClick={handleClose}>
