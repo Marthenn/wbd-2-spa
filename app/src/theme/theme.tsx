@@ -41,4 +41,15 @@ responsiveTheme.typography.h2 = {
   },
 };
 
+responsiveTheme.typography.h5 = {
+  fontSize: '1.0rem',
+  fontWeight: 600,
+  '@media (min-width:600px)': {
+    fontSize: '1.0rem',
+  },
+  [responsiveTheme.breakpoints.up('md')]: {
+    fontSize: '1.0rem',
+  },
+};
+
 export default responsiveTheme;

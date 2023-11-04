@@ -6,6 +6,9 @@ import Navbar from '../components/NavBar/Navbar';
 import NavbarSignIn from '../components/NavBar/NavbarSignIn';
 import userPhoto from '../assets/user-placeholder.svg';
 import bgWave from '../assets/bg-wave.svg';
+import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
+import SignUpDialog from '../components/MembershipRequestDialog/SignUpDialog';
+import { useState } from 'react';
 
 const tiers = [
     {
@@ -33,6 +36,16 @@ const tiers = [
   ];
 
 const SignUpPremium = () => {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+    setOpen(true);
+    };
+
+    const handleClose = () => {
+    setOpen(false);
+    };
+
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' }}}/>
@@ -45,6 +58,7 @@ const SignUpPremium = () => {
           height: '100vh',
         }}
         >
+        <SignUpDialog open={open} handleClose={handleClose}/>
         <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6,}}>
           <Typography
             component="h1"
@@ -116,6 +130,7 @@ const SignUpPremium = () => {
                   <CardActions>
                     <Button
                       fullWidth
+                      onClick={handleOpen}
                       variant={tier.buttonVariant as 'outlined' | 'contained'}
                     >
                       {tier.buttonText}
