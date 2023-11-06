@@ -20,11 +20,11 @@ import {
     import Navbar from '../components/NavBar/Navbar';
     import SearchBar from '../components/SearchBar/SearchBar';
     import BookCard from '../components/BookCard/BookCard';
-    import coverPlaceholder from '../assets/cover-placeholder.png';
     import banner1 from '../assets/banner1.svg';
     import banner2 from '../assets/banner2.svg';
     import banner3 from '../assets/banner3.svg';
     import BannerCarousel from '../components/BannerCarousel/BannerCarousel';
+    import RoundedButton from '../components/Button/RoundedButton';
   
   const AudioBooks = () => {
     const onChange = (e: React.SyntheticEvent) => {};
@@ -40,6 +40,10 @@ import {
         },
       ];
       
+      function HandleSearchButtonClick(e: React.SyntheticEvent<Element, Event>): void {
+          throw new Error('Function not implemented.');
+      }
+
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
@@ -50,7 +54,7 @@ import {
             component="main"
             sx={{
               width: '100%',
-              margin: '100px 5%',
+              margin: '100px 3%',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -65,17 +69,19 @@ import {
           >
             <Box               
             sx={{[theme.breakpoints.down('md')]: 
-            {display: 'none'}, padding: '20px'}}
+            {display: 'none'}, padding: '24px'}}
             >
                 <BannerCarousel contentArray={bannerContent}/>
             </Box>
-            <Container sx={{ width: '100%' }}>
-            <Typography variant="h1">Audio Books</Typography>
-              <SearchBar onChangeFunction={onChange} />
+            <Container sx={{ width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+              <Typography variant="h1">Audio Books</Typography>
+              <Box display="flex" flexDirection="row" sx={{ alignItems: 'center' }} >
+                <SearchBar onChangeFunction={onChange} />
+                <RoundedButton text='Search' onClickFunction={HandleSearchButtonClick} color='roundedButtonGreen'/>
+              </Box>
               <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-              <Grid container spacing={5}>
-
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid container spacing={{ xs: 0, md: 3 }} justifyContent='center' alignItems='center'>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -84,16 +90,16 @@ import {
                         }}
                     >
                         <BookCard
-                        details_url=""
+                        details_url="/AudioBooks/1/Details"
                         title="Book Title#placeholder"
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -107,11 +113,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -125,11 +131,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -143,11 +149,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -161,11 +167,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -179,11 +185,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -197,11 +203,11 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3} style={{paddingLeft: 0}}>
                     <Box
                         sx={{
                         display: 'flex',
@@ -215,7 +221,7 @@ import {
                         author="Book Author"
                         rating={5}
                         duration={50}
-                        cover={coverPlaceholder}
+                        cover=""
                     />
                     </Box>
                 </Grid>

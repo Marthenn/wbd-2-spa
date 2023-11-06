@@ -5,16 +5,24 @@ import { Button } from "@mui/material";
 const RoundedButton = ({
   text,
   onClickFunction,
-  disabled,
+  disabled = false,
   color,
+  icon = "",
 }: {
   text: string;
   onClickFunction: (e: React.SyntheticEvent) => void;
-  disabled: boolean;
+  disabled?: boolean;
   color: string;
+  icon?: string;
 }) => {
   return (
-    <Button className={styles[color]} type="button" onClick={onClickFunction} disabled={disabled}>
+    <Button
+      className={styles[color]}
+      type="button"
+      onClick={onClickFunction}
+      disabled={disabled}
+      startIcon={icon === "" ? null :  <img src={icon} alt="icon" />}
+    >
       {text}
     </Button>
   );

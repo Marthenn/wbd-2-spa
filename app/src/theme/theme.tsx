@@ -20,10 +20,10 @@ const theme = createTheme({
 const responsiveTheme = responsiveFontSizes(theme);
 
 responsiveTheme.typography.h1 = {
-  fontSize: '1.2rem',
+  fontSize: '1.8rem',
   fontWeight: 600,
   '@media (min-width:600px)': {
-    fontSize: '1.5rem',
+    fontSize: '2.0rem',
   },
   [responsiveTheme.breakpoints.up('md')]: {
     fontSize: '2.4rem',
@@ -31,13 +31,13 @@ responsiveTheme.typography.h1 = {
 };
 
 responsiveTheme.typography.h2 = {
-  fontSize: '0.6rem',
+  fontSize: '1.5rem',
   fontWeight: 600,
   '@media (min-width:600px)': {
-    fontSize: '0.75rem',
+    fontSize: '1.5rem',
   },
   [responsiveTheme.breakpoints.up('md')]: {
-    fontSize: '1.2rem',
+    fontSize: '1.8rem',
   },
 };
 

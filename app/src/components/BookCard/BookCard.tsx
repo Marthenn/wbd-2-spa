@@ -1,6 +1,8 @@
 import styles from './bookcard.module.css';
 import star from '../../assets/star.svg';
 import { Container, Grid, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import coverPlaceholder from '../../assets/cover-placeholder.png';
 
 const BookCard = ({
   details_url,
@@ -17,9 +19,10 @@ const BookCard = ({
   duration: number;
   cover: string;
 }) => {
+  cover = cover == "" ? coverPlaceholder : cover;
   return (
     <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <a href={details_url} className={styles.card}>
+      <Link to={details_url} className={styles.card}>
         <Grid container rowSpacing={0}>
           <Grid item>
             <div className={styles.cover}>
@@ -56,7 +59,7 @@ const BookCard = ({
             </Grid>
           </Grid>
         </Grid>
-      </a>
+      </Link>
     </Container>
   );
 };

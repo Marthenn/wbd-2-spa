@@ -1,6 +1,7 @@
 import styles from "./navbar.module.css";
-import { AppBar, Avatar, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Toolbar, Typography } from "@mui/material";
 import logo from "../../assets/logo.svg";
+import { Link } from 'react-router-dom'; // Import Link
 
 const Navbar = ({
     category,
@@ -11,17 +12,17 @@ const Navbar = ({
     username: string;
     userPhoto: string;
 }) => {
-    let menuItems: string[] = [];
+    let menuItems: string[][] = [];
 
     // Customize menu items based on the category
     if (category === 'user') {
       menuItems = [
-        'Audio Books',
+        ['Audio Books', '/AudioBooks'],
       ];
     } else if (category === 'admin') {
       menuItems = [
-        'Edit Transcript',
-        'Membership Requests',
+        ['Edit Transcript', '/EditTranscript'],
+        ['Membership Requests', '/MembershipRequests'],
       ];
     }
     return (
@@ -37,22 +38,22 @@ const Navbar = ({
                 <div className={styles.menu}>
                     <img src={logo} className={styles.logo} alt="Logo"/>
                     {menuItems.map((menuItem) => (
-                    <a href="" key={menuItem}>
-                        {menuItem}
-                    </a>
+                        <Link to={menuItem[1]} key={menuItem[0]}>
+                            {menuItem[0]}
+                        </Link>
                     ))}
                 </div>
                 <div className={styles.userInfo}>
                     {userPhoto ? (
                         <Avatar sx={{ width: 25, height: 25 }}>
-                        <img src={userPhoto} alt="User" />
+                            <img src={userPhoto} alt="User" />
                         </Avatar>
                     ) : (
                         <Avatar sx={{ width: 25, height: 25 }}>
-                        {username.charAt(0).toUpperCase()}
+                            {username.charAt(0).toUpperCase()}
                         </Avatar>
                     )}
-                    <a href="" className={styles.userName}> {username} </a>
+                    <Link to="/Profile" className={styles.userName}> {username} </Link>
                 </div>
             </Toolbar>
       </AppBar>
