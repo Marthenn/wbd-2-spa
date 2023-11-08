@@ -1,22 +1,15 @@
 import {
     Box,
-    Button,
-    Paper,
     Typography,
-    TextField,
     Grid,
-    Link,
     ThemeProvider,
     StyledEngineProvider,
     CssBaseline,
     Container,
-    GlobalStyles,
     Pagination,
   } from '@mui/material';
-    import { useNavigate, Navigate } from 'react-router-dom';
     import * as React from 'react';
     import theme from '../theme/theme';
-    import logo from '../assets/logo.svg';
     import Navbar from '../components/NavBar/Navbar';
     import SearchBar from '../components/SearchBar/SearchBar';
     import BookCard from '../components/BookCard/BookCard';

@@ -2,7 +2,6 @@ import styles from "./audioplayer.module.css";
 import { Box, Button, Slider, Typography, styled } from "@mui/material";
 import pauseButton from '../../assets/pause-button.svg';
 import playButton from '../../assets/play-button.svg';
-import { Link } from 'react-router-dom';
 import theme from "../../theme/theme";
 import React from "react";
 

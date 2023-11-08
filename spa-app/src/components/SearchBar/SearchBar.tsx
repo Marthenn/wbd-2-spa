@@ -21,7 +21,7 @@ const SearchBar = ({
                 [theme.breakpoints.up('md')]: {
                   width: '30%',
                 },
-                margin: '10px',
+                margin: '10px 0',
             }}
             label="Search"
             onChange={onChangeFunction}

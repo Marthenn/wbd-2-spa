@@ -1,7 +1,5 @@
-import React from "react";
 import {
   Box,
-  Button,
   Container,
   CssBaseline,
   Grid,
@@ -10,7 +8,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import pending from "../../assets/pending.svg";
 import theme from "../theme/theme";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -91,7 +88,7 @@ const AudioBookDetails = ({ open }: { open: boolean; }) => {
                   ml: '0px',
                 },
               }}>
-              <Grid  container spacing={{ xs: 0, md: 3 }} justifyContent='space-between' alignItems='start' sx={{ width: '100%', padding: '16px'}}>
+              <Grid  container spacing={{ xs: 0, sm: 3 }} justifyContent='space-between' alignItems='start' sx={{ width: '100%', padding: '16px'}}>
                 <Grid item xs={12}>
                   <Typography variant="h2">{data.title}</Typography>
                 </Grid>

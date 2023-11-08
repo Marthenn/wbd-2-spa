@@ -1,6 +1,5 @@
-import { Box, Button, Paper, Typography, TextField, Grid, Link, ThemeProvider, StyledEngineProvider, GlobalStyles, CssBaseline, AppBar, Toolbar, Container, Card, CardHeader, CardContent, CardActions } from '@mui/material'
-import { useNavigate, Navigate } from 'react-router-dom'
-import * as React from 'react';
+import { Box, Button, Typography, Grid, ThemeProvider, GlobalStyles, CssBaseline, Container, Card, CardHeader, CardContent, CardActions } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import theme from '../theme/theme';
 import NavbarSignIn from '../components/NavBar/NavbarSignIn';
 import bgWave from '../assets/bg-wave.svg';
