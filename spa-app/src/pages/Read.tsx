@@ -1,73 +1,114 @@
-import React from "react";
+import * as React from 'react';
 import {
   Box,
-  Button,
   Container,
   CssBaseline,
   StyledEngineProvider,
   Tab,
   ThemeProvider,
-} from "@mui/material";
+  Typography,
+} from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import pending from "../../assets/pending.svg";
-import theme from "../theme/theme";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/NavBar/Navbar";
-import BookCover from "../components/BookCard/BookCover";
-import RoundedButton from "../components/Button/RoundedButton";
-import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
-import back from "../assets/back.svg";
-import star from "../assets/star.svg";
-import read from "../assets/read.svg";
-import { Link } from 'react-router-dom';
+import theme from '../theme/theme';
+import { useParams } from 'react-router-dom';
+import Navbar from '../components/NavBar/Navbar';
+import RoundedButton from '../components/Button/RoundedButton';
+import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
+
+const chapters = [
+  {
+    id: '1',
+    title: 'Chapter 1',
+    content: 'Content for Chapter 1...',
+  },
+  {
+    id: '2',
+    title: 'Chapter 2',
+    content: 'Content for Chapter 2...',
+  },
+  // Add more chapters as needed
+];
 
 const Read = () => {
-  const [value, setValue] = React.useState('1');
+  const { chapterId } = useParams();
+  const [value, setValue] = React.useState(chapterId || chapters[0].id);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const currentChapterIndex = chapters.findIndex((chapter) => chapter.id === value);
+
+  const handlePrevChapter = () => {
+    if (currentChapterIndex > 0) {
+      const prevChapterId = chapters[currentChapterIndex - 1].id;
+      setValue(prevChapterId);
+    }
+  };
+
+  const handleNextChapter = () => {
+    if (currentChapterIndex < chapters.length - 1) {
+      const nextChapterId = chapters[currentChapterIndex + 1].id;
+      setValue(nextChapterId);
+    }
+  };
+
   return (
     <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {/* TODO: Replace placeholder */}
-          <Navbar category="user" username="user#placeholder" userPhoto="" />
-          <Container
-            component="main"
-            sx={{
-              width: '100%',
-              margin: '105px 0px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              [theme.breakpoints.up('md')]: {
-                margin: '100px 2%',
-              },
-              [theme.breakpoints.up('lg')]: {
-                margin: '100px 8%',
-              },
-            }}
-          >
-            <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={handleChange} aria-label="lab API tabs example">
-                  <Tab label="Item One" value="1" />
-                  <Tab label="Item Two" value="2" />
-                  <Tab label="Item Three" value="3" />
-                </TabList>
-              </Box>
-              <TabPanel value="1">Item One</TabPanel>
-              <TabPanel value="2">Item Two</TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Navbar category="user" username="user#placeholder" userPhoto="" />
+        <Container
+          component="main"
+          sx={{
+            width: '100%',
+            margin: '105px 0px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'left',
+            justifyContent: 'center',
+            [theme.breakpoints.up('md')]: {
+              margin: '100px 2%',
+            },
+            [theme.breakpoints.up('lg')]: {
+              margin: '100px 8%',
+            },
+          }}
+        >
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} variant="scrollable" scrollButtons="auto">
+                {chapters.map((chapter) => (
+                  <Tab key={chapter.id} label={chapter.title} value={chapter.id} />
+                ))}
+              </TabList>
+            </Box>
+            {chapters.map((chapter) => (
+              <TabPanel key={chapter.id} value={chapter.id}>
+                <Typography variant="h1">Book Title</Typography>
+                <Typography variant="h2">{chapter.title}</Typography>
+                <Typography>{chapter.content}</Typography>
+              </TabPanel>
+            ))}
           </TabContext>
+          <Box display="flex" flexDirection="row" padding="9px">
+            <RoundedButton
+              text="< Prev Chapter"
+              onClickFunction={handlePrevChapter}
+              color="roundedButtonBlack"
+            />
+            <RoundedButton
+              text="Next Chapter >"
+              onClickFunction={handleNextChapter}
+              color="roundedButtonBlack"
+            />
+          </Box>
         </Container>
-        </ThemeProvider>
-      </StyledEngineProvider>
+        <AudioPlayer audio_url="" duration={1000} />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

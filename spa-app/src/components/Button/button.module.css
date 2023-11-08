@@ -48,7 +48,7 @@
 }
 
 .roundedButtonBlack {
-    background: #1F1F1F;
+    background: linear-gradient(45deg,#1F1F1F, #4C4C4C);
     border-radius: 50px;
     border: 0;
     color: white;
