@@ -20,7 +20,7 @@ import {
     import RoundedButton from '../components/Button/RoundedButton';
   
   const AudioBooks = () => {
-    const onChange = (e: React.SyntheticEvent) => {};
+    const onChange = (_e: React.SyntheticEvent) => {};
     const bannerContent = [
         {
             imageUrl: banner1,
@@ -33,7 +33,7 @@ import {
         },
       ];
       
-      function HandleSearchButtonClick(e: React.SyntheticEvent<Element, Event>): void {
+      function HandleSearchButtonClick(_e: React.SyntheticEvent<Element, Event>): void {
           throw new Error('Function not implemented.');
       }
 

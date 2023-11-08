@@ -1,8 +1,6 @@
 import {
   createBrowserRouter,
-  createRoutesFromElements,
   RouterProvider,
-  Route
 } from "react-router-dom"
 
 import SignIn from "./pages/SignIn"
@@ -26,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/AudioBooks/:id/Details",
-    element: <AudioBookDetails open={true}/>
+    element: <AudioBookDetails/>
   },
   {
     path: "/AudioBooks/:id/Read",

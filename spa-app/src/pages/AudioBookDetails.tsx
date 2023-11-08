@@ -26,10 +26,9 @@ function convertTimeToMinutes(time: string): number {
   return totalMinutes;
 }
 
-const AudioBookDetails = ({ open }: { open: boolean; }) => {
+const AudioBookDetails = () => {
   const navigate = useNavigate();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  
+    
   const { id } = useParams();
 
   const data = {
