@@ -1,19 +1,20 @@
 import React from "react";
 import styles from "./button.module.css";
 import { Button } from "@mui/material";
+import { SvgIconComponent } from "@mui/icons-material";
 
 const RoundedButton = ({
   text,
   onClickFunction,
   disabled = false,
   color,
-  icon = "",
+  icon = null,
 }: {
   text: string;
   onClickFunction: (e: React.SyntheticEvent) => void;
   disabled?: boolean;
   color: string;
-  icon?: string;
+  icon?: SvgIconComponent | null;
 }) => {
   return (
     <Button
@@ -21,7 +22,7 @@ const RoundedButton = ({
       type="button"
       onClick={onClickFunction}
       disabled={disabled}
-      startIcon={icon === "" ? null :  <img src={icon} alt="icon" />}
+      startIcon={icon && React.createElement(icon)}
     >
       {text}
     </Button>

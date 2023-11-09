@@ -1,5 +1,5 @@
 import styles from './bookcard.module.css';
-import star from '../../assets/star.svg';
+import StarIcon from '@mui/icons-material/Star';
 import { Container, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import coverPlaceholder from '../../assets/cover-placeholder.png';
@@ -37,7 +37,7 @@ const BookCard = ({
             </Grid>
             <Grid item container spacing={0} xs={2} justifyContent="flex-end" alignItems="center">
               <Grid item xs={0}>
-                <img src={star} alt="star" />
+                <StarIcon sx={{color: "#faaf00"}}/>
               </Grid>
               <Grid item xs={1}>
                 <Typography variant="body2" className={styles.ratingNum}>

@@ -17,7 +17,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import UploadProofDialog from "./PaymentSuccessDialog";
-import upload from "../../assets/upload.svg";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import theme from "../../theme/theme";
 
 const PaymentDialog = ({
@@ -153,12 +153,13 @@ const PaymentDialog = ({
                         sx={{ ml: 4 }}
                         component="label"
                         variant="contained"
-                        startIcon={<img src={upload} alt="upload" />}
+                        startIcon={<CloudUploadIcon/>}
                         disabled={uploadButtonDisabled}
                       >
                         Upload PNG/JPG
                         <input
                           type="file"
+                          accept="image/png, image/jpeg"
                           style={{ display: "none" }}
                           onChange={handleFileChange}
                           name="paymentProof"

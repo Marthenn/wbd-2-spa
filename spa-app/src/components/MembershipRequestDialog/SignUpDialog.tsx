@@ -191,7 +191,6 @@ import {
                       name="password"
                       label="Password"
                       type="password"
-                      autoComplete="new-password"
                       onChange={handleFormChange}
                       value={formData.password}
                     />

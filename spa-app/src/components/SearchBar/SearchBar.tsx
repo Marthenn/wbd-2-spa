@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./searchbar.module.css";
-import { TextField, InputAdornment, OutlinedInput } from "@mui/material";
-import searchIcon from '../../assets/search.svg';
+import { TextField, InputAdornment } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 import theme from "../../theme/theme";
 
 const SearchBar = ({
@@ -29,7 +29,7 @@ const SearchBar = ({
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
-                        <img src={searchIcon} alt="Search" />
+                        <SearchIcon/>
                     </InputAdornment>
                 ),
                 style: {

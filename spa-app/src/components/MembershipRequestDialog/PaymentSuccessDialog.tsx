@@ -8,7 +8,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import pending from "../../assets/pending.svg";
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import theme from "../../theme/theme";
 
 const PaymentSuccessDialog = ({
@@ -24,7 +24,7 @@ const PaymentSuccessDialog = ({
       <DialogTitle>Payment Done!</DialogTitle>
       <DialogContent>
         <Box display="flex" alignItems="center" textAlign="center" style={{ marginBottom: 10 }}>
-            <img src={pending} alt="pending" style={{ marginRight: 10 }} />
+            <AccessTimeFilledIcon sx={{fontSize: 30, margin: 1}}/>
             <Typography variant="h5">Pending approval</Typography>
         </Box>
         <Typography>Wait for the administrator to approve your request.</Typography>

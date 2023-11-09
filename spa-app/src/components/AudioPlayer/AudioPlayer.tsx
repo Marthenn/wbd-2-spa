@@ -1,7 +1,7 @@
 import styles from "./audioplayer.module.css";
 import { Box, Button, Slider, Typography, styled } from "@mui/material";
-import pauseButton from '../../assets/pause-button.svg';
-import playButton from '../../assets/play-button.svg';
+import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import theme from "../../theme/theme";
 import React from "react";
 
@@ -31,11 +31,11 @@ const AudioPlayer = ({
             <Box sx={{marginRight: 3}}>
                 {paused ? ( 
                 <Button className={styles.playPauseButton} onClick={() => setPaused(!paused)}>
-                    <img src={pauseButton} alt="Pause" />
+                    <PauseCircleFilledRoundedIcon sx={{fontSize: 60, color: "#FFFFFF"}} />
                 </Button>)
                 : (
                 <Button className={styles.playPauseButton} onClick={() => setPaused(!paused)}>
-                    <img src={playButton} alt="Play" />
+                    <PlayCircleFilledWhiteIcon sx={{fontSize: 60, color: "#FFFFFF"}}/>
                 </Button>)
                 }
             </Box>
