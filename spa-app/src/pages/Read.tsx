@@ -12,10 +12,11 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import theme from '../theme/theme';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Navbar from '../components/NavBar/Navbar';
 import RoundedButton from '../components/Button/RoundedButton';
 import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
 const chapters = [
   {
@@ -34,6 +35,7 @@ const chapters = [
 const Read = () => {
   const { chapterId } = useParams();
   const [value, setValue] = React.useState(chapterId || chapters[0].id);
+  const { id } = useParams();
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -77,6 +79,9 @@ const Read = () => {
             },
           }}
         >
+          <Link to={`/AudioBooks/${id}/Details`}>
+          <ArrowBackRoundedIcon sx={{fontSize: 40}}/>
+          </Link>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} variant="scrollable" scrollButtons="auto">

@@ -1,5 +1,5 @@
 import styles from "./navbar.module.css";
-import { AppBar, Avatar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Toolbar } from "@mui/material";
 import logo from "../../assets/logo.svg";
 import { Link } from 'react-router-dom'; // Import Link
 
