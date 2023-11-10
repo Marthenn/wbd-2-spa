@@ -9,7 +9,7 @@ const PrimaryButtonRed = ({
 }: {
   text: string;
   onClickFunction: (e: React.SyntheticEvent) => void;
-  disabled: boolean;
+  disabled?: boolean;
 }) => {
     return (
         <Button fullWidth className={styles.primaryButtonRed} type="button" onClick={onClickFunction} disabled={disabled}>

@@ -10,6 +10,8 @@ import AudioBookDetails from "./pages/AudioBookDetails"
 import Read from "./pages/Read"
 import EditTranscriptList from "./pages/admin/EditTranscriptList"
 import MembershipRequests from "./pages/admin/MembershipRequests"
+import ProfileAdmin from "./pages/admin/ProfileAdmin"
+import Profile from "./pages/Profile"
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
   {
     path: "/admin/MembershipRequests",
     element: <MembershipRequests/>
+  },
+  {
+    path: "/admin/Profile",
+    element: <ProfileAdmin/>
+  },
+  {
+    path: "/Profile",
+    element: <Profile/>
   },
 ])
 
