@@ -18,11 +18,12 @@ const Navbar = ({
     if (category === 'user') {
       menuItems = [
         ['Audio Books', '/AudioBooks'],
+        ['Saved Books', '/SavedBooks'],
       ];
     } else if (category === 'admin') {
       menuItems = [
-        ['Edit Transcript', '/EditTranscript'],
-        ['Membership Requests', '/MembershipRequests'],
+        ['Edit Transcript', '/admin/EditTranscript'],
+        ['Membership Requests', '/admin/MembershipRequests'],
       ];
     }
     return (

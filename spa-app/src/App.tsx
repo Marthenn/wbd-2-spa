@@ -8,6 +8,8 @@ import SignUpPremium from "./pages/SignUpPremium"
 import AudioBooks from "./pages/AudioBooks"
 import AudioBookDetails from "./pages/AudioBookDetails"
 import Read from "./pages/Read"
+import EditTranscriptList from "./pages/admin/EditTranscriptList"
+import MembershipRequests from "./pages/admin/MembershipRequests"
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
   {
     path: "/AudioBooks/:id/Read",
     element: <Read/>
+  },
+  {
+    path: "/admin/EditTranscript",
+    element: <EditTranscriptList/>
+  },
+  {
+    path: "/admin/MembershipRequests",
+    element: <MembershipRequests/>
   },
 ])
 
