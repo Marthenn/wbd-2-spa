@@ -23,11 +23,15 @@ const chapters = [
     id: '1',
     title: 'Chapter 1',
     content: 'Content for Chapter 1...',
+    audio_url: 'URL_FOR_CHAPTER_2_AUDIO',
+    duration: 100,
   },
   {
     id: '2',
     title: 'Chapter 2',
     content: 'Content for Chapter 2...',
+    audio_url: 'URL_FOR_CHAPTER_2_AUDIO',
+    duration: 100,
   },
   // Add more chapters as needed
 ];
@@ -111,7 +115,7 @@ const Read = () => {
             />
           </Box>
         </Container>
-        <AudioPlayer audio_url="" duration={1000} />
+        <AudioPlayer audio_url={chapters[currentChapterIndex].audio_url} duration={chapters[currentChapterIndex].duration} />
       </ThemeProvider>
     </StyledEngineProvider>
   );

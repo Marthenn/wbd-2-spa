@@ -144,7 +144,7 @@ import {
     return (
       <>
         <Dialog open={open} onClose={handleClose} fullScreen={isSmallScreen}>
-          <DialogTitle>Sign Up</DialogTitle>
+          <DialogTitle>Sign Up for 1 month</DialogTitle>
           <DialogContent>
             <Paper elevation={3} style={{ padding: 20 }}>
               <Box component="form" noValidate sx={{ mt: 3 }}>
