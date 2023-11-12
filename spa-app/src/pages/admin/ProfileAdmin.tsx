@@ -1,6 +1,5 @@
-import { useState, useEffect, ChangeEvent, ReactElement, SyntheticEvent, ChangeEventHandler } from 'react';
+import { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
 import {
-  Typography,
   ThemeProvider,
   StyledEngineProvider,
   CssBaseline,

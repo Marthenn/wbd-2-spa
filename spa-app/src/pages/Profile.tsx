@@ -1,6 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
 import {
-  Typography,
   ThemeProvider,
   StyledEngineProvider,
   CssBaseline,

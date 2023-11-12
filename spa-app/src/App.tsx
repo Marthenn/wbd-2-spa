@@ -13,6 +13,7 @@ import MembershipRequests from "./pages/admin/MembershipRequests"
 import ProfileAdmin from "./pages/admin/ProfileAdmin"
 import Profile from "./pages/Profile"
 import EditTranscript from "./pages/admin/EditTranscript"
+import UpgradePremium from "./pages/UpgradePremium"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/SignUpPremium",
     element: <SignUpPremium />
+  },
+  {
+    path: "/UpgradePremium",
+    element: <UpgradePremium />
   },
   {
     path: "/AudioBooks",
