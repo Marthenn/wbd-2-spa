@@ -193,7 +193,7 @@ const handleAddChapter = () => {
             },
           }}
         >
-          <Link to={`/AudioBooks/${id}/Details`}>
+          <Link to={`/EditTranscript`}>
             <ArrowBackRoundedIcon sx={{ fontSize: 40 }} />
           </Link>
           <TabContext value={value}>
