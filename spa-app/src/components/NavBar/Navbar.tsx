@@ -23,7 +23,6 @@ const Navbar = ({
     } else if (category === 'admin') {
       menuItems = [
         ['Edit Transcript', '/admin/EditTranscript'],
-        ['Add Transcript', '/admin/AddTranscript'],
         ['Membership Requests', '/admin/MembershipRequests'],
       ];
     }
@@ -55,7 +54,7 @@ const Navbar = ({
                             {username.charAt(0).toUpperCase()}
                         </Avatar>
                     )}
-                    <Link to="/Profile" className={styles.userName}> {username} </Link>
+                    <Link to={category === 'user' ? "/Profile" : "/admin/Profile" }className={styles.userName}> {username} </Link>
                 </div>
             </Toolbar>
       </AppBar>

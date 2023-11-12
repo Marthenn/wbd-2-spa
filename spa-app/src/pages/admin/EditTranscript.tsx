@@ -193,7 +193,7 @@ const handleAddChapter = () => {
             },
           }}
         >
-          <Link to={`/EditTranscript`}>
+          <Link to={`/admin/EditTranscript`}>
             <ArrowBackRoundedIcon sx={{ fontSize: 40 }} />
           </Link>
           <TabContext value={value}>
