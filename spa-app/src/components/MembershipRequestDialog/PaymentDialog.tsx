@@ -30,8 +30,6 @@ const PaymentDialog = ({
   formData: {
     username: string;
     email: string;
-    password: string;
-    confirmPassword: string;
     paymentProof: File | null;
   };
 }) => {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Container, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, Container, Button } from '@mui/material';
 
 type ContentItem = {
   imageUrl: string;

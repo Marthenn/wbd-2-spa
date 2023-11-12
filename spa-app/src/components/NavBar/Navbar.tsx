@@ -23,6 +23,7 @@ const Navbar = ({
     } else if (category === 'admin') {
       menuItems = [
         ['Edit Transcript', '/admin/EditTranscript'],
+        ['Add Transcript', '/admin/AddTranscript'],
         ['Membership Requests', '/admin/MembershipRequests'],
       ];
     }

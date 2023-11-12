@@ -22,6 +22,7 @@ const ProfileAdmin = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   useEffect(() => {
     // Simulate fetching user data from an API
@@ -46,6 +47,7 @@ const ProfileAdmin = () => {
   const [newUserPhoto, setNewUserPhoto] = useState<string>('');
   const [newUsername, setNewUsername] = useState<string>(''); // Corrected this line
   const [newEmail, setNewEmail] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -92,7 +94,7 @@ const ProfileAdmin = () => {
           }}
         >
           <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
-            <Grid item xs={12} md={6} sx={{ p: 10, mt: 5 }}>
+            <Grid item xs={12} md={6} sx={{ p: 10, mt: 15 }}>
               {userPhoto !== '' && newUserPhoto !== '' ? (
                 <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
                   <Avatar sx={{ width: 255, height: 255 }} src={userPhoto? userPhoto:newUserPhoto} alt="User"/>
@@ -147,6 +149,18 @@ const ProfileAdmin = () => {
                 autoComplete="username"
                 value={newUsername ? newUsername : username}
                 onChange={(e) => setNewUsername(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="password"
+                value={newPassword ? newPassword : password}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
               <Button
                 type="submit"

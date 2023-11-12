@@ -12,6 +12,7 @@ import EditTranscriptList from "./pages/admin/EditTranscriptList"
 import MembershipRequests from "./pages/admin/MembershipRequests"
 import ProfileAdmin from "./pages/admin/ProfileAdmin"
 import Profile from "./pages/Profile"
+import EditTranscript from "./pages/admin/EditTranscript"
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "/admin/EditTranscript",
     element: <EditTranscriptList/>
+  },
+  {
+    path: "/admin/EditTranscript/:id/Edit",
+    element: <EditTranscript/>
   },
   {
     path: "/admin/MembershipRequests",
