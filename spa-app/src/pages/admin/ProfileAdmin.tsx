@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import theme from '../../theme/theme';
 import Navbar from '../../components/NavBar/Navbar';
-import PrimaryButtonRed from '../../components/Button/PrimaryButtonRed';
 import EditIcon from '@mui/icons-material/Edit';
 import sideWave from '../../assets/side-wave.svg'
 
@@ -171,10 +170,14 @@ const ProfileAdmin = () => {
               >
                 Save Changes
               </Button>
-              <PrimaryButtonRed
-                text="Logout"
-                onClickFunction={handleLogout}
-              />
+              <Button
+                  onClick={handleLogout}
+                  variant="contained"
+                  color="error"
+                  fullWidth
+                >
+                  Logout
+                </Button>
             </Grid>
             <Grid item xs={0} md={6}>
                 <img src={sideWave} alt="" />
