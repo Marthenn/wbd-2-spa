@@ -13,6 +13,7 @@ import MembershipRequests from "./pages/admin/MembershipRequests"
 import ProfileAdmin from "./pages/admin/ProfileAdmin"
 import Profile from "./pages/Profile"
 import EditTranscript from "./pages/admin/EditTranscript"
+import NotFound from "./pages/NotFound.tsx";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
     path: "/Profile",
     element: <Profile/>
   },
+  {
+    path: "*",
+    element: <NotFound/>
+  }
 ])
 
 const App = () => {
