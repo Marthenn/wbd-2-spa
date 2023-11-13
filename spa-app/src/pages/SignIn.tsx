@@ -13,6 +13,7 @@ import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
+import {useEffect, useState} from "react";
 
 const SignIn = () => {
   const [openCheckStatus, setOpenCheckStatus] = React.useState(false);
@@ -27,6 +28,33 @@ const SignIn = () => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
   };
+
+  const [faceio, setFaceIO] = useState<any>(null);
+  const [error, setError] = useState<any>(null);
+
+  // hook to initialize FaceIO instance when component mounts
+  useEffect(()=>{
+    const initFaceIO = async() => {
+      try {
+        const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
+        setFaceIO(faceioInstance);
+      } catch (error) {
+        setError("Failed to initialize FaceIO: " + error.message);
+      }
+    }
+  })
+
+  // handle authentication of FaceIO
+  const handleAuthenticate = async() => {
+    try {
+      const response = await faceio.authenticate({
+        locale: "auto",
+      });
+      // TODO: handle the payroll gotten from faceio to REST
+    } catch (error) {
+      setError("Authentication failed: " + error.message);
+    }
+  }
 
   return (
     <StyledEngineProvider injectFirst>
