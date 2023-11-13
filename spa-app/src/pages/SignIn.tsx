@@ -12,8 +12,18 @@ import { ThemeProvider, CssBaseline, StyledEngineProvider } from '@mui/material'
 import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
+import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
 
 const SignIn = () => {
+  const [openCheckStatus, setOpenCheckStatus] = React.useState(false);
+  
+  const handleOpenCheckStatus = () => {
+    setOpenCheckStatus(true);
+  };
+
+  const handleCloseCheckStatus = () => {
+    setOpenCheckStatus(false);
+  };
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
   };
@@ -22,6 +32,10 @@ const SignIn = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <CheckStatusDialog
+            open={openCheckStatus} 
+            handleClose={handleCloseCheckStatus}
+        />
         <Grid container component="main" sx={{ height: '100vh' }}>
           <Grid item xs={12} sm={6} md={4} component={Paper} elevation={6} square>
             <img
@@ -81,6 +95,17 @@ const SignIn = () => {
                       {"Don't have an account? Sign Up for Premium"}
                     </Link>
                   </Grid>
+                  <Grid item>
+                    <Button
+                    onClick={handleOpenCheckStatus}
+                    variant="outlined"
+                    color="primary"
+                    sx={{ mt: 1 }}
+                    fullWidth
+                    >
+                      Already applied request? Check your request status
+                    </Button>
+                </Grid>
                 </Grid>
               </Box>
             </Box>

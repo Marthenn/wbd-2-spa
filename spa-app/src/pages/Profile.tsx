@@ -10,17 +10,39 @@ import {
   TextField,
   Button,
   IconButton,
+  Typography,
 } from '@mui/material';
 import theme from '../theme/theme';
 import Navbar from '../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
 import sideWave from '../assets/side-wave.svg';
+import RoundedButton from '../components/Button/RoundedButton';
+import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
+import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
+  const [openCheckStatus, setOpenCheckStatus] = useState(false);
+  
+  const handleOpenCheckStatus = () => {
+    setOpenCheckStatus(true);
+  };
+
+  const handleCloseCheckStatus = () => {
+    setOpenCheckStatus(false);
+  };
+
+  const handleOpenPaymentDialog = () => {
+    setOpenPaymentDialog(true);
+  };
+
+  const handleClosePaymentDialog = () => {
+    setOpenPaymentDialog(false);
+  };
 
   useEffect(() => {
     // Simulate fetching user data from an API
@@ -79,19 +101,32 @@ const Profile = () => {
           sx={{
             width: '100%',
             height: '100vh',
-            margin: '0 3%',
+            margin: '30px 3%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'baseline',
             [theme.breakpoints.up('sm')]: {
-              margin: '0 2%',
+              margin: '30px 2%',
             },
             [theme.breakpoints.up('lg')]: {
-              margin: '0 8%',
+              margin: '30px 8%',
             },
           }}
         >
+        <PaymentDialog 
+            formData={{
+                username: "user#placeholder", // dari session
+                email: "email#placeholder",
+                paymentProof: null,
+            }}
+            open={openPaymentDialog} 
+            handleClose={handleClosePaymentDialog}
+        />
+        <StatusDialog
+            open={openCheckStatus} 
+            handleClose={handleCloseCheckStatus}
+        />
           <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
             <Grid item xs={12} md={6} sx={{ p: {xs: 0, md: 10}, mt: {xs: 20, md:5} }} justifyContent="center" alignItems="center">
               {userPhoto !== '' && newUserPhoto !== '' ? (
@@ -171,6 +206,21 @@ const Profile = () => {
                 value={newPassword ? newPassword : password}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
+              <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Typography variant="body1" sx={{ mr: 1 }}>
+                  Premium account active until: dari session
+                </Typography>
+                <RoundedButton text="Extend" onClickFunction={handleOpenPaymentDialog} color="roundedButtonPurple" fullWidth={false}/>
+              </Box>
+              <Button
+                onClick={handleOpenCheckStatus}
+                variant="outlined"
+                color="primary"
+                sx={{ mt: 1 }}
+                fullWidth
+              >
+                Already applied request? Check your request status
+              </Button>
               <Button
                 type="submit"
                 fullWidth
@@ -191,7 +241,12 @@ const Profile = () => {
                 </Button>
             </Grid>
             <Grid item xs={0} md={6} display={{ xs: 'none', md: 'flex' }}>
-                <img src={sideWave} alt="" />
+                <img src={sideWave} alt="" 
+                  style={{
+                    objectFit: 'cover',
+                    height: '100vh',
+                  }}
+                />
             </Grid>
           </Grid>
         </Container>

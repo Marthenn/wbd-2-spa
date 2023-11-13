@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
+import React, { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -14,13 +14,15 @@ import {
 import theme from '../../theme/theme';
 import Navbar from '../../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
-import sideWave from '../../assets/side-wave.svg'
+import sideWave from '../../assets/side-wave.svg';
+import { useNavigate } from 'react-router-dom';
 
-const ProfileAdmin = () => {
+const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate fetching user data from an API
@@ -43,7 +45,7 @@ const ProfileAdmin = () => {
   }, []);
 
   const [newUserPhoto, setNewUserPhoto] = useState<string>('');
-  const [newUsername, setNewUsername] = useState<string>(''); // Corrected this line
+  const [newUsername, setNewUsername] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
 
@@ -65,9 +67,13 @@ const ProfileAdmin = () => {
     }
   };
 
-    function handleLogout(_e: SyntheticEvent<Element, Event>): void {
-        throw new Error('Function not implemented.');
-    }
+  function handleLogout(_e: SyntheticEvent<Element, Event>): void {
+    throw new Error('Function not implemented.');
+  }
+
+  function handleExtend(_e: SyntheticEvent<Element, Event>): void {
+    navigate('/ExtendPremium');
+  }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -78,50 +84,61 @@ const ProfileAdmin = () => {
           component="main"
           sx={{
             width: '100%',
-            margin: '0 3%',
+            height: '100vh',
+            margin: '20px 3%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'baseline',
             [theme.breakpoints.up('sm')]: {
-              margin: '0 2%',
+              margin: '20px 2%',
             },
             [theme.breakpoints.up('lg')]: {
-              margin: '0 8%',
+              margin: '20px 8%',
             },
           }}
         >
           <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
-            <Grid item xs={12} md={6} sx={{ p: 10, mt: 15 }}>
+            <Grid item xs={12} md={6} sx={{ p: {xs: 0, md: 10}, mt: {xs: 20, md:5} }} justifyContent="center" alignItems="center">
               {userPhoto !== '' && newUserPhoto !== '' ? (
                 <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar sx={{ width: 255, height: 255 }} src={userPhoto? userPhoto:newUserPhoto} alt="User"/>
+                  <Avatar sx={{
+                        width: { xs: 100, md: 200 },
+                        height: { xs: 100, md: 200 },
+                        fontSize: { xs: 40, md: 80 },
+                    }} src={userPhoto ? userPhoto : newUserPhoto} alt="User" />
                   <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon/>
+                    <EditIcon />
                   </IconButton>
                   <input
-                        type="file"
-                        id="fileInput"
-                        accept="image/*"
-                        onChange={handlePhotoChange}
-                        style={{ display: 'none' }}
-                    />
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    style={{ display: 'none' }}
+                  />
                 </Box>
               ) : (
                 <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar sx={{ width: 255, height: 255, fontSize: 40 }}>
+                  <Avatar
+                    sx={{
+                        width: { xs: 100, md: 200 },
+                        height: { xs: 100, md: 200 },
+                        fontSize: { xs: 40, md: 80 },
+                    }}
+                    >
                     {username.charAt(0).toUpperCase()}
                   </Avatar>
                   <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon/>
+                    <EditIcon />
                   </IconButton>
                   <input
-                        type="file"
-                        id="fileInput"
-                        accept="image/*"
-                        onChange={handlePhotoChange}
-                        style={{ display: 'none' }}
-                    />
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    style={{ display: 'none' }}
+                  />
                 </Box>
               )}
               <TextField
@@ -179,7 +196,7 @@ const ProfileAdmin = () => {
                   Logout
                 </Button>
             </Grid>
-            <Grid item xs={0} md={6}>
+            <Grid item xs={0} md={6} display={{ xs: 'none', md: 'flex' }}>
                 <img src={sideWave} alt="" />
             </Grid>
           </Grid>
@@ -189,4 +206,4 @@ const ProfileAdmin = () => {
   );
 };
 
-export default ProfileAdmin;
+export default Profile;
