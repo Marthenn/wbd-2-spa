@@ -20,7 +20,7 @@ const CheckStatusDialog = ({
 }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [formData, setFormData] = useState({
-    requestId: '', 
+    username: '', 
   });
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
 
@@ -46,14 +46,14 @@ const CheckStatusDialog = ({
       <DialogTitle>Check Your Request Status</DialogTitle>
       <DialogContent style={{ padding: 20}}>
         <TextField
-          name="requestId"
+          name="username"
           required
           fullWidth
-          id="requestId"
-          label="Request ID"
+          id="username"
+          label="Username"
           autoFocus
           onChange={handleFormChange}
-          value={formData.requestId} />
+          value={formData.username} />
       </DialogContent>
       <DialogActions style={{ padding: 20 }}>
         <Button variant="contained" color="primary" onClick={handleCheck}>

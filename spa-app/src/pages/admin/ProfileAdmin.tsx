@@ -5,17 +5,14 @@ import {
   CssBaseline,
   Container,
   Box,
-  Grid,
   Avatar,
   TextField,
   Button,
   IconButton,
-  Typography,
 } from '@mui/material';
 import theme from '../../theme/theme';
 import Navbar from '../../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
-import RoundedButton from '../../components/Button/RoundedButton';
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');

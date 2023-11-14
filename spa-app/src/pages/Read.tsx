@@ -94,13 +94,11 @@ const Read = () => {
                 ))}
               </TabList>
             </Box>
-            {chapters.map((chapter) => (
-              <TabPanel key={chapter.id} value={chapter.id}>
-                <Typography variant="h1">Book Title</Typography>
-                <Typography variant="h2">{chapter.title}</Typography>
-                <Typography>{chapter.content}</Typography>
-              </TabPanel>
-            ))}
+            <TabPanel key={chapters[currentChapterIndex].id} value={chapters[currentChapterIndex].id}>
+              <Typography variant="h1">Book Title</Typography>
+              <Typography variant="h2">{chapters[currentChapterIndex].title}</Typography>
+              <Typography>{chapters[currentChapterIndex].content}</Typography>
+            </TabPanel>
           </TabContext>
           <Box display="flex" flexDirection="row" padding="9px">
             <RoundedButton

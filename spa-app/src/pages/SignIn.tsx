@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   Box,
   Button,
@@ -15,9 +14,14 @@ import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
 import FaceIcon from '@mui/icons-material/Face';
 import {useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom';
+import { REST_BASE_URL } from '../constants/constants';
 
 const SignIn = () => {
-  const [openCheckStatus, setOpenCheckStatus] = React.useState(false);
+  const [openCheckStatus, setOpenCheckStatus] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
   
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);
@@ -28,34 +32,55 @@ const SignIn = () => {
   };
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const requestBody = {
+      username,
+      password,
+    };
+
+    const response = await fetch(`${REST_BASE_URL}/account/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
+    } else {
+      localStorage.setItem("token", `Bearer ${data.token}`);
+      navigate("/AudioBooks");
+    }
   };
 
-  const [faceio, setFaceIO] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
+  // const [faceio, setFaceIO] = useState<any>(null);
+  // const [error, setError] = useState<any>(null);
 
   // hook to initialize FaceIO instance when component mounts
-  useEffect(()=>{
-    const initFaceIO = async() => {
-      try {
-        const faceioInstance = new faceio(/*TODO: Fill with the corresponding API KEY FROM .env*/);
-        setFaceIO(faceioInstance);
-      } catch (error) {
-        setError("Failed to initialize FaceIO: " + error.message);
-      }
-    }
-  })
+  // useEffect(()=>{
+  //   const initFaceIO = async() => {
+  //     try {
+  //       const faceioInstance = new faceio(/*TODO: Fill with the corresponding API KEY FROM .env*/);
+  //       setFaceIO(faceioInstance);
+  //     } catch (error) {
+  //       setError("Failed to initialize FaceIO: " + error.message);
+  //     }
+  //   }
+  // })
 
-  // handle authentication of FaceIO
-  const handleAuthenticate = async() => {
-    try {
-      const response = await faceio.authenticate({
-        locale: "auto",
-      });
-      // TODO: handle the payroll gotten from faceio to REST
-    } catch (error) {
-      setError("Authentication failed: " + error.message);
-    }
-  }
+  // // handle authentication of FaceIO
+  // const handleAuthenticate = async() => {
+  //   try {
+  //     const response = await faceio.authenticate({
+  //       locale: "auto",
+  //     });
+  //     // TODO: handle the payroll gotten from faceio to REST
+  //   } catch (error) {
+  //     setError("Authentication failed: " + error.message);
+  //   }
+  // }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -96,6 +121,7 @@ const SignIn = () => {
                   label="Username"
                   name="username"
                   autoComplete="username"
+                  onChange={(e) => setUsername(e.target.value)}
                   autoFocus
                 />
                 <TextField
@@ -106,6 +132,7 @@ const SignIn = () => {
                   label="Password"
                   type="password"
                   id="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                 />
                 <Button
@@ -123,7 +150,7 @@ const SignIn = () => {
                   variant="contained"
                   sx={{ mt: 1, mb: 2 }}
                   color="primary"
-                  onClick={handleAuthenticate}
+                  // onClick={handleAuthenticate}
                   startIcon={<FaceIcon />}
                 >
                   Sign In with Face ID
