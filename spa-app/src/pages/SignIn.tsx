@@ -13,6 +13,7 @@ import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
+import FaceIcon from '@mui/icons-material/Face';
 import {useEffect, useState} from "react";
 
 const SignIn = () => {
@@ -116,6 +117,16 @@ const SignIn = () => {
                   onClick={handleSubmit}
                 >
                   Sign In
+                </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 1, mb: 2 }}
+                  color="primary"
+                  onClick={handleAuthenticate}
+                  startIcon={<FaceIcon />}
+                >
+                  Sign In with Face ID
                 </Button>
                 <Grid container>
                   <Grid item>

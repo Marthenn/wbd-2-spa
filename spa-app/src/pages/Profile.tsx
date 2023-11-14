@@ -18,6 +18,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
+import FaceIcon from '@mui/icons-material/Face';
+
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
@@ -289,6 +291,35 @@ const Profile = () => {
             >
               Already applied request? Check your request status
             </Button>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mt: 3,
+                width: '100%',
+              }}
+            >
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleEnroll} //sesuiain
+                startIcon={<FaceIcon />}
+                sx={{ mr: 1 }}
+              >
+                Register Face ID
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={handleEnroll} //sesuiain
+              >
+                Delete Face ID
+              </Button>
+            </Box>
             <Button
               type="submit"
               fullWidth
