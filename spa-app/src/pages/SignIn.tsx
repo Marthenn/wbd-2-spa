@@ -6,6 +6,10 @@ import {
   TextField,
   Grid,
   Link,
+  Alert,
+  IconButton,
+  Snackbar,
+  AlertTitle,
 } from '@mui/material';
 import { ThemeProvider, CssBaseline, StyledEngineProvider } from '@mui/material';
 import theme from '../theme/theme';
@@ -13,12 +17,13 @@ import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
 import FaceIcon from '@mui/icons-material/Face';
-import {useEffect, useState} from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { REST_BASE_URL } from '../constants/constants';
 
 const SignIn = () => {
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
@@ -36,24 +41,32 @@ const SignIn = () => {
       username,
       password,
     };
-
-    const response = await fetch(`${REST_BASE_URL}/account/token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      alert(data.message);
-    } else {
-      localStorage.setItem("token", `Bearer ${data.token}`);
-      navigate("/AudioBooks");
+    try{
+      const response = await fetch(`${REST_BASE_URL}/account/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        setOpenAlert(true);
+      } else {
+        localStorage.setItem("token", `Bearer ${data.token}`);
+        navigate("/AudioBooks");
+      }
+    }
+    catch(error){
+      setOpenAlert(true);
     }
   };
+
+  const handleAlertClose = (_event?: React.SyntheticEvent | Event, _reason?: string) => { {
+    setOpenAlert(false);
+  }}
 
   // const [faceio, setFaceIO] = useState<any>(null);
   // const [error, setError] = useState<any>(null);
@@ -86,6 +99,12 @@ const SignIn = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical:'top',  horizontal:'left' }}>
+          <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
+            <AlertTitle>Login Failed!</AlertTitle>
+            Please check your username and password again.
+          </Alert>
+        </Snackbar>
         <CheckStatusDialog
             open={openCheckStatus} 
             handleClose={handleCloseCheckStatus}
