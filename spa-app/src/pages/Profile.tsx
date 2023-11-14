@@ -29,37 +29,37 @@ const Profile = () => {
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
 
-  const [faceio, setFaceIO] = useState(null);
-  const [error, setError] = useState(null);
+  // const [faceio, setFaceIO] = useState(null);
+  // const [error, setError] = useState(null);
 
-  // hook to initialize FaceIO instance when component mounts
-  useEffect(() => {
-    const initFaceIO = async () => {
-      try {
-        const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
-        setFaceIO(faceioInstance);
-      } catch (error) {
-        setError("Failed to initialize FaceIO: " + error.message);
-      }
-    };
-    initFaceIO();
-  }, []);
+  // // hook to initialize FaceIO instance when component mounts
+  // useEffect(() => {
+  //   const initFaceIO = async () => {
+  //     try {
+  //       const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
+  //       setFaceIO(faceioInstance);
+  //     } catch (error) {
+  //       setError("Failed to initialize FaceIO: " + error.message);
+  //     }
+  //   };
+  //   initFaceIO();
+  // }, []);
 
-  // handle authentication of FaceIO
-  const handleEnroll = async () => {
-    try {
-      const response = await faceio.enroll({
-        locale: "auto",
-        payload: {
-          email: "email#placeholder",
-          pin: "pin#placeholder",
-        },
-      });
-      // TODO: handle the payroll gotten from faceio to REST
-    } catch (error) {
-      setError("Authentication failed: " + error.message);
-    }
-  };
+  // // handle authentication of FaceIO
+  // const handleEnroll = async () => {
+  //   try {
+  //     const response = await faceio.enroll({
+  //       locale: "auto",
+  //       payload: {
+  //         email: "email#placeholder",
+  //         pin: "pin#placeholder",
+  //       },
+  //     });
+  //     // TODO: handle the payroll gotten from faceio to REST
+  //   } catch (error) {
+  //     setError("Authentication failed: " + error.message);
+  //   }
+  // };
 
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);

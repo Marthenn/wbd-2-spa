@@ -6,10 +6,6 @@ import {
   TextField,
   Grid,
   Link,
-  Alert,
-  IconButton,
-  Snackbar,
-  AlertTitle,
 } from '@mui/material';
 import { ThemeProvider, CssBaseline, StyledEngineProvider } from '@mui/material';
 import theme from '../theme/theme';
@@ -19,6 +15,7 @@ import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog
 import FaceIcon from '@mui/icons-material/Face';
 import {SyntheticEvent, useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
+import Alerts from '../components/Alerts/Alerts';
 import { REST_BASE_URL } from '../constants/constants';
 
 const SignIn = () => {
@@ -99,12 +96,12 @@ const SignIn = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{ vertical:'top',  horizontal:'left' }}>
-          <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-            <AlertTitle>Login Failed!</AlertTitle>
-            Please check your username and password again.
-          </Alert>
-        </Snackbar>
+        <Alerts
+            open={openAlert}
+            handleClose={handleAlertClose}
+            title='Sign In Failed!'
+            description='Please check your username & password again.'
+        />
         <CheckStatusDialog
             open={openCheckStatus} 
             handleClose={handleCloseCheckStatus}
