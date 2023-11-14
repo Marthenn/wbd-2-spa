@@ -23,10 +23,12 @@ import Navbar from '../../components/NavBar/Navbar';
 import RoundedButton from '../../components/Button/RoundedButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import placeHolder from '../../assets/cover-placeholder.png';
+import CheckIcon from '@mui/icons-material/Check';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const data = [
-  { uid: 1, username: 'user1', email: 'user1@gmail.com', requestDate: '01/01/2023', activePeriod: 1, Total: '$50', isApproved: true, paymentProof: '/' },
-  { uid: 2, username: 'user1', email: 'user1@gmail.com', requestDate: '01/01/2023', activePeriod: 1, Total: '$50', isApproved: false, paymentProof: placeHolder },
+  { uid: 1, username: 'user1', email: 'user1@gmail.com', requestDate: '01/01/2023', status: 0, paymentProof: '/' },
+  { uid: 2, username: 'user1', email: 'user1@gmail.com', requestDate: '01/01/2023', status: 0, paymentProof: placeHolder },
 ];
 
 const MembershipRequests = () => {
@@ -43,11 +45,20 @@ const MembershipRequests = () => {
     setPage(0);
   };
 
-  const handleChangeConnect = (id: number) => {
+  const handleApprove = (id: number) => {
     setRows(
       rows.map((row) => {
         if (row.uid === id) {
-          return { ...row, isApproved: !row.isApproved };
+          return { ...row, status: 1 };
+        } else return { ...row };
+      })
+    );
+  };
+  const handleReject = (id: number) => {
+    setRows(
+      rows.map((row) => {
+        if (row.uid === id) {
+          return { ...row, status: 2 };
         } else return { ...row };
       })
     );
@@ -89,8 +100,7 @@ const MembershipRequests = () => {
                     <TableCell>Username</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Request Date</TableCell>
-                    <TableCell>Active Period</TableCell>
-                    <TableCell>Total</TableCell>
+                    <TableCell align='center'>Status</TableCell>
                     <TableCell align='right'></TableCell>
                   </TableRow>
                 </TableHead>
@@ -104,15 +114,27 @@ const MembershipRequests = () => {
                         <TableCell>{row.username}</TableCell>
                         <TableCell>{row.email}</TableCell>
                         <TableCell>{row.requestDate}</TableCell>
-                        <TableCell>{row.activePeriod}</TableCell>
-                        <TableCell>{row.Total}</TableCell>
+                        <TableCell align='center'>
+                          {
+                            row.status === 1 ? <CheckIcon color= 'success'/> : row.status === 2 ? <CancelIcon color='error'/> : null
+                          }
+                        </TableCell>
                         <TableCell align='right'>
                           <RoundedButton
-                            text={row.isApproved ? 'Disapprove' : 'Approve'}
+                            text={row.status === 1 ? 'Approved' : 'Approve'}
                             onClickFunction={() => {
-                              handleChangeConnect(row.uid);
+                              handleApprove(row.uid);
                             }}
-                            color={row.isApproved ? 'roundedButtonRed' : 'roundedButtonGreen'}
+                            color='roundedButtonGreen'
+                            disabled={row.status === 2|| row.status === 1}
+                          />
+                          <RoundedButton
+                            text={row.status === 2 ? 'Rejected' : 'Reject'}
+                            onClickFunction={() => {
+                              handleReject(row.uid);
+                            }}
+                            color='roundedButtonRed'
+                            disabled={row.status === 2|| row.status === 1}
                           />
                         </TableCell>
                       </TableRow>
