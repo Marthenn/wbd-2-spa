@@ -10,19 +10,18 @@ import {
   TextField,
   Button,
   IconButton,
+  Typography,
 } from '@mui/material';
 import theme from '../../theme/theme';
 import Navbar from '../../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
-import sideWave from '../../assets/side-wave.svg';
-import { useNavigate } from 'react-router-dom';
+import RoundedButton from '../../components/Button/RoundedButton';
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate fetching user data from an API
@@ -71,135 +70,161 @@ const Profile = () => {
     throw new Error('Function not implemented.');
   }
 
-  function handleExtend(_e: SyntheticEvent<Element, Event>): void {
-    navigate('/ExtendPremium');
-  }
-
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar category="admin" username={username} userPhoto={userPhoto} />
+        <Navbar category="user" username={username} userPhoto={userPhoto} />
         <Container
           component="main"
           sx={{
-            width: '100%',
+            mt: 5,
             height: '100vh',
-            margin: '20px 3%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'baseline',
-            [theme.breakpoints.up('sm')]: {
-              margin: '20px 2%',
-            },
-            [theme.breakpoints.up('lg')]: {
-              margin: '20px 8%',
-            },
+            justifyContent: 'center',
           }}
         >
-          <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
-            <Grid item xs={12} md={6} sx={{ p: {xs: 0, md: 10}, mt: {xs: 20, md:5} }} justifyContent="center" alignItems="center">
-              {userPhoto !== '' && newUserPhoto !== '' ? (
-                <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar sx={{
-                        width: { xs: 100, md: 200 },
-                        height: { xs: 100, md: 200 },
-                        fontSize: { xs: 40, md: 80 },
-                    }} src={userPhoto ? userPhoto : newUserPhoto} alt="User" />
-                  <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon />
-                  </IconButton>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    style={{ display: 'none' }}
-                  />
-                </Box>
-              ) : (
-                <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar
-                    sx={{
-                        width: { xs: 100, md: 200 },
-                        height: { xs: 100, md: 200 },
-                        fontSize: { xs: 40, md: 80 },
-                    }}
-                    >
-                    {username.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon />
-                  </IconButton>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    style={{ display: 'none' }}
-                  />
-                </Box>
-              )}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="email"
-                label="Email"
-                type="email"
-                id="email"
-                autoComplete="email"
-                value={newEmail ? newEmail : email}
-                onChange={(e) => setNewEmail(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="username"
-                label="Username"
-                type="username"
-                id="username"
-                autoComplete="username"
-                value={newUsername ? newUsername : username}
-                onChange={(e) => setNewUsername(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="password"
-                value={newPassword ? newPassword : password}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                color="primary"
-                onClick={handleSubmit}
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: '500px',
+              px: 3,
+              py: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {userPhoto !== '' && newUserPhoto !== '' ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'end',
+                  justifyContent: 'center',
+                }}
               >
-                Save Changes
-              </Button>
-              <Button
-                  onClick={handleLogout}
-                  variant="contained"
-                  color="error"
-                  fullWidth
+                <Avatar
+                  sx={{
+                    width: { xs: 100, md: 200 },
+                    height: { xs: 100, md: 200 },
+                    fontSize: { xs: 40, md: 80 },
+                  }}
+                  src={userPhoto ? userPhoto : newUserPhoto}
+                  alt="User"
+                />
+                <IconButton
+                  onClick={() => document.getElementById('fileInput')?.click()}
                 >
-                  Logout
-                </Button>
-            </Grid>
-            <Grid item xs={0} md={6} display={{ xs: 'none', md: 'flex' }}>
-                <img src={sideWave} alt="" />
-            </Grid>
-          </Grid>
+                  <EditIcon />
+                </IconButton>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                />
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'end',
+                  justifyContent: 'center',
+                }}
+              >
+                <Avatar
+                  sx={{
+                    width: { xs: 100, md: 200 },
+                    height: { xs: 100, md: 200 },
+                    fontSize: { xs: 40, md: 80 },
+                  }}
+                >
+                  {username.charAt(0).toUpperCase()}
+                </Avatar>
+                <IconButton
+                  onClick={() => document.getElementById('fileInput')?.click()}
+                >
+                  <EditIcon />
+                </IconButton>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                />
+              </Box>
+            )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="email"
+              label="Email"
+              type="email"
+              id="email"
+              autoComplete="email"
+              value={newEmail ? newEmail : email}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="username"
+              label="Username"
+              type="username"
+              id="username"
+              autoComplete="username"
+              value={newUsername ? newUsername : username}
+              onChange={(e) => setNewUsername(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="password"
+              value={newPassword ? newPassword : password}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mt: 1,
+              }}
+            >
+            </Box>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              color="primary"
+              onClick={handleSubmit}
+            >
+              Save Changes
+            </Button>
+            <Button
+              onClick={handleLogout}
+              variant="contained"
+              color="error"
+              fullWidth
+            >
+              Logout
+            </Button>
+          </Box>
         </Container>
       </ThemeProvider>
     </StyledEngineProvider>

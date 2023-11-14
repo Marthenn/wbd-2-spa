@@ -15,7 +15,6 @@ import {
 import theme from '../theme/theme';
 import Navbar from '../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
-import sideWave from '../assets/side-wave.svg';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
@@ -32,33 +31,34 @@ const Profile = () => {
   const [error, setError] = useState(null);
 
   // hook to initialize FaceIO instance when component mounts
-  useEffect(()=>{
-    const initFaceIO = async() => {
+  useEffect(() => {
+    const initFaceIO = async () => {
       try {
         const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
         setFaceIO(faceioInstance);
       } catch (error) {
         setError("Failed to initialize FaceIO: " + error.message);
       }
-    }
-  })
+    };
+    initFaceIO();
+  }, []);
 
   // handle authentication of FaceIO
-  const handleEnroll = async() => {
+  const handleEnroll = async () => {
     try {
       const response = await faceio.enroll({
         locale: "auto",
         payload: {
           email: "email#placeholder",
           pin: "pin#placeholder",
-        }
+        },
       });
       // TODO: handle the payroll gotten from faceio to REST
     } catch (error) {
       setError("Authentication failed: " + error.message);
     }
-  }
-  
+  };
+
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);
   };
@@ -130,156 +130,184 @@ const Profile = () => {
         <Container
           component="main"
           sx={{
-            width: '100%',
+            mt: 5,
             height: '100vh',
-            margin: '30px 3%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'baseline',
-            [theme.breakpoints.up('sm')]: {
-              margin: '30px 2%',
-            },
-            [theme.breakpoints.up('lg')]: {
-              margin: '30px 8%',
-            },
+            justifyContent: 'center',
           }}
         >
-        <PaymentDialog 
+          <PaymentDialog
             formData={{
-                username: "user#placeholder", // dari session
-                email: "email#placeholder",
-                paymentProof: null,
+              username: "user#placeholder", // dari session
+              email: "email#placeholder",
+              paymentProof: null,
             }}
-            open={openPaymentDialog} 
+            open={openPaymentDialog}
             handleClose={handleClosePaymentDialog}
-        />
-        <StatusDialog
-            open={openCheckStatus} 
+          />
+          <StatusDialog
+            open={openCheckStatus}
             handleClose={handleCloseCheckStatus}
-        />
-          <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
-            <Grid item xs={12} md={6} sx={{ p: {xs: 0, md: 10}, mt: {xs: 20, md:5} }} justifyContent="center" alignItems="center">
-              {userPhoto !== '' && newUserPhoto !== '' ? (
-                <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar sx={{
-                        width: { xs: 100, md: 200 },
-                        height: { xs: 100, md: 200 },
-                        fontSize: { xs: 40, md: 80 },
-                    }} src={userPhoto ? userPhoto : newUserPhoto} alt="User" />
-                  <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon />
-                  </IconButton>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    style={{ display: 'none' }}
-                  />
-                </Box>
-              ) : (
-                <Box display="flex" flexDirection="row" alignItems="end" justifyContent="center">
-                  <Avatar
-                    sx={{
-                        width: { xs: 100, md: 200 },
-                        height: { xs: 100, md: 200 },
-                        fontSize: { xs: 40, md: 80 },
-                    }}
-                    >
-                    {username.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <IconButton onClick={() => document.getElementById('fileInput')?.click()}>
-                    <EditIcon />
-                  </IconButton>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    style={{ display: 'none' }}
-                  />
-                </Box>
-              )}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="email"
-                label="Email"
-                type="email"
-                id="email"
-                autoComplete="email"
-                value={newEmail ? newEmail : email}
-                onChange={(e) => setNewEmail(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="username"
-                label="Username"
-                type="username"
-                id="username"
-                autoComplete="username"
-                value={newUsername ? newUsername : username}
-                onChange={(e) => setNewUsername(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="password"
-                value={newPassword ? newPassword : password}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="body1" sx={{ mr: 1 }}>
-                  Premium account active until: dari session
-                </Typography>
-                <RoundedButton text="Extend" onClickFunction={handleOpenPaymentDialog} color="roundedButtonPurple" fullWidth={false}/>
-              </Box>
-              <Button
-                onClick={handleOpenCheckStatus}
-                variant="outlined"
-                color="primary"
-                sx={{ mt: 1 }}
-                fullWidth
+          />
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: '500px',
+              px: 3,
+              py: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {userPhoto !== '' && newUserPhoto !== '' ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'end',
+                  justifyContent: 'center',
+                }}
               >
-                Already applied request? Check your request status
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                color="primary"
-                onClick={handleSubmit}
-              >
-                Save Changes
-              </Button>
-              <Button
-                  onClick={handleLogout}
-                  variant="contained"
-                  color="error"
-                  fullWidth
-                >
-                  Logout
-                </Button>
-            </Grid>
-            <Grid item xs={0} md={6} display={{ xs: 'none', md: 'flex' }}>
-                <img src={sideWave} alt="" 
-                  style={{
-                    objectFit: 'cover',
-                    height: '100vh',
+                <Avatar
+                  sx={{
+                    width: { xs: 100, md: 200 },
+                    height: { xs: 100, md: 200 },
+                    fontSize: { xs: 40, md: 80 },
                   }}
+                  src={userPhoto ? userPhoto : newUserPhoto}
+                  alt="User"
                 />
-            </Grid>
-          </Grid>
+                <IconButton
+                  onClick={() => document.getElementById('fileInput')?.click()}
+                >
+                  <EditIcon />
+                </IconButton>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                />
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'end',
+                  justifyContent: 'center',
+                }}
+              >
+                <Avatar
+                  sx={{
+                    width: { xs: 100, md: 200 },
+                    height: { xs: 100, md: 200 },
+                    fontSize: { xs: 40, md: 80 },
+                  }}
+                >
+                  {username.charAt(0).toUpperCase()}
+                </Avatar>
+                <IconButton
+                  onClick={() => document.getElementById('fileInput')?.click()}
+                >
+                  <EditIcon />
+                </IconButton>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                />
+              </Box>
+            )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="email"
+              label="Email"
+              type="email"
+              id="email"
+              autoComplete="email"
+              value={newEmail ? newEmail : email}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="username"
+              label="Username"
+              type="username"
+              id="username"
+              autoComplete="username"
+              value={newUsername ? newUsername : username}
+              onChange={(e) => setNewUsername(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="password"
+              value={newPassword ? newPassword : password}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mt: 1,
+              }}
+            >
+              <Typography variant="body1" sx={{ mr: 1 }}>
+                Premium account active until: dari session
+              </Typography>
+              <RoundedButton
+                text="Extend"
+                onClickFunction={handleOpenPaymentDialog}
+                color="roundedButtonPurple"
+                fullWidth={false}
+              />
+            </Box>
+            <Button
+              onClick={handleOpenCheckStatus}
+              variant="outlined"
+              color="primary"
+              sx={{ mt: 1 }}
+              fullWidth
+            >
+              Already applied request? Check your request status
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              color="primary"
+              onClick={handleSubmit}
+            >
+              Save Changes
+            </Button>
+            <Button
+              onClick={handleLogout}
+              variant="contained"
+              color="error"
+              fullWidth
+            >
+              Logout
+            </Button>
+          </Box>
         </Container>
       </ThemeProvider>
     </StyledEngineProvider>

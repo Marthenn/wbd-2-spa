@@ -36,7 +36,7 @@ const SignIn = () => {
   useEffect(()=>{
     const initFaceIO = async() => {
       try {
-        const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
+        const faceioInstance = new faceio(/*TODO: Fill with the corresponding API KEY FROM .env*/);
         setFaceIO(faceioInstance);
       } catch (error) {
         setError("Failed to initialize FaceIO: " + error.message);
