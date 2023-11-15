@@ -61,8 +61,7 @@ const AudioPlayer = ({
         const seconds = value - minute * 60;
         const formattedSeconds = seconds.toFixed(2).split(".")[1]; // Keep two digits after the decimal point
         return `${minute}:${formattedSeconds}`;
-      }
-      
+      }      
 
     return (
         <Box className={styles.audioPlayer}>
@@ -99,7 +98,12 @@ const AudioPlayer = ({
                 value={position}
                 min={0}
                 max={duration}
-                onChange={(_, value) => setPosition(value as number)}
+                onChange={(_, value) => {
+                    setPosition(value as number);
+                    if (audioPlayer.current) {
+                        audioPlayer.current.currentTime = value as number;
+                    }
+                }}
                 sx={{
                     color: 'secondary.main',
                     width: '80%',
