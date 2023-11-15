@@ -34,8 +34,8 @@ import {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(`${REST_BASE_URL}api/book/fetch`);
-        console.log(response);
-        setBooks(response.data);
+        console.log(response.data);
+        setBooks(response.data.books);
       } catch (error) {
         console.error('Error fetching books:', error);
       }

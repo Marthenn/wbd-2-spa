@@ -67,8 +67,8 @@ const Navbar = ({
                       'aria-labelledby': 'basic-button',
                   }}
               >
-                {menuItems.map((menuItem) => (
-                    <MenuItem onClick={() => navigate(menuItem[1])}>{menuItem[0]}</MenuItem>
+                {menuItems.map((menuItem, index) => (
+                    <MenuItem key={index} onClick={() => navigate(menuItem[1])}>{menuItem[0]}</MenuItem>
                 ))}
             </Menu>
             </>
