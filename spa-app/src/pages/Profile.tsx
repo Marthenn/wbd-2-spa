@@ -305,7 +305,7 @@ const Profile = () => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleEnroll} //sesuiain
+                // onClick={handleEnroll}
                 startIcon={<FaceIcon />}
                 sx={{ mr: 1 }}
               >
@@ -315,7 +315,7 @@ const Profile = () => {
                 fullWidth
                 variant="contained"
                 color="error"
-                onClick={handleEnroll} //sesuiain
+                // onClick={handleEnroll}
               >
                 Delete Face ID
               </Button>
