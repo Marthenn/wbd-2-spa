@@ -21,6 +21,7 @@ import StarIcon from '@mui/icons-material/Star';
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import audio_url from '../../2.mp3'
 import { Link } from 'react-router-dom';
 
 function convertTimeToMinutes(time: string) {
@@ -41,7 +42,7 @@ const AudioBookDetails = () => {
     category: 'Book Category',
     duration: '02:30:00',
     rating: 4.5,
-    audio_directory: '/audio/book-audio.mp3',
+    audio_directory: audio_url,
     curr_duration: '00:30:00',
     currentTotalSeconds: 1800,
     totalSeconds: 9000,
@@ -153,7 +154,7 @@ const AudioBookDetails = () => {
             </Grid>
           </Container>
         </Container>
-        <AudioPlayer audio_url="" duration={1000} />
+        <AudioPlayer audio_url={data.audio_directory} duration={1000} />
       </ThemeProvider>
     </StyledEngineProvider>
   );
