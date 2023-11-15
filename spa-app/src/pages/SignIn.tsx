@@ -12,7 +12,6 @@ import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
-import FaceIcon from '@mui/icons-material/Face';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alerts from '../components/Alerts/Alerts';
@@ -127,15 +126,6 @@ const SignIn = () => {
                   onClick={handleSubmit}
                 >
                   Sign In
-                </Button>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                  color="primary"
-                  startIcon={<FaceIcon />}
-                >
-                  Sign In with Face ID
                 </Button>
                 <Grid container>
                   <Grid item>

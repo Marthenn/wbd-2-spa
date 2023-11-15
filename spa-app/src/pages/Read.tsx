@@ -105,11 +105,13 @@ const Read = () => {
               text="< Prev Chapter"
               onClickFunction={handlePrevChapter}
               color="roundedButtonBlack"
+              disabled={currentChapterIndex === 0}
             />
             <RoundedButton
               text="Next Chapter >"
               onClickFunction={handleNextChapter}
               color="roundedButtonBlack"
+              disabled={currentChapterIndex === chapters.length - 1}
             />
           </Box>
         </Container>
