@@ -1,5 +1,4 @@
 import { Box, Button, Typography, Grid, ThemeProvider, GlobalStyles, CssBaseline, Container, Card, CardHeader, CardContent, CardActions } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import theme from '../theme/theme';
 import NavbarSignIn from '../components/NavBar/NavbarSignIn';
 import bgWave from '../assets/bg-wave.svg';
@@ -46,11 +45,9 @@ const SignUpPremium = () => {
       if (tierTitle === 'Premium') {
         handleOpen();
       } else {
-        navigate('/your-redirect-url');
+        window.location.href = 'https://youtube.com';
       }
     };
-
-    const navigate = useNavigate();
 
     return (
       <ThemeProvider theme={theme}>

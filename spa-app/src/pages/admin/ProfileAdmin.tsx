@@ -71,7 +71,7 @@ const Profile = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar category="user" username={username} userPhoto={userPhoto} />
+        <Navbar category="admin" username={username} userPhoto={userPhoto} />
         <Container
           component="main"
           sx={{

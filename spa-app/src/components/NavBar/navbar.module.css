@@ -53,3 +53,9 @@ a:hover {
     gap: 20px;
     align-items: center;
 }
+
+@media (max-width: 600px) {
+    .userName {
+        max-width: 25px;
+    }
+}

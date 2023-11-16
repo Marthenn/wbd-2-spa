@@ -18,8 +18,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
-import FaceIcon from '@mui/icons-material/Face';
-
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
@@ -28,38 +26,6 @@ const Profile = () => {
   const [password, setPassword] = useState<string>('');
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
-
-  // const [faceio, setFaceIO] = useState(null);
-  // const [error, setError] = useState(null);
-
-  // // hook to initialize FaceIO instance when component mounts
-  // useEffect(() => {
-  //   const initFaceIO = async () => {
-  //     try {
-  //       const faceioInstance = new faceIO(/*TODO: Fill with the corresponding API KEY FROM .env*/);
-  //       setFaceIO(faceioInstance);
-  //     } catch (error) {
-  //       setError("Failed to initialize FaceIO: " + error.message);
-  //     }
-  //   };
-  //   initFaceIO();
-  // }, []);
-
-  // // handle authentication of FaceIO
-  // const handleEnroll = async () => {
-  //   try {
-  //     const response = await faceio.enroll({
-  //       locale: "auto",
-  //       payload: {
-  //         email: "email#placeholder",
-  //         pin: "pin#placeholder",
-  //       },
-  //     });
-  //     // TODO: handle the payroll gotten from faceio to REST
-  //   } catch (error) {
-  //     setError("Authentication failed: " + error.message);
-  //   }
-  // };
 
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);
@@ -291,35 +257,6 @@ const Profile = () => {
             >
               Already applied request? Check your request status
             </Button>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mt: 3,
-                width: '100%',
-              }}
-            >
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={handleEnroll} //sesuiain
-                startIcon={<FaceIcon />}
-                sx={{ mr: 1 }}
-              >
-                Register Face ID
-              </Button>
-              <Button
-                fullWidth
-                variant="contained"
-                color="error"
-                onClick={handleEnroll} //sesuiain
-              >
-                Delete Face ID
-              </Button>
-            </Box>
             <Button
               type="submit"
               fullWidth

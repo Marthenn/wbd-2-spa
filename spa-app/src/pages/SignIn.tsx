@@ -12,19 +12,19 @@ import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
-import FaceIcon from '@mui/icons-material/Face';
-import {SyntheticEvent, useEffect, useState} from "react";
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alerts from '../components/Alerts/Alerts';
 import { REST_BASE_URL } from '../constants/constants';
+import axios from 'axios';
 
 const SignIn = () => {
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
-  
+
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);
   };
@@ -32,80 +32,46 @@ const SignIn = () => {
   const handleCloseCheckStatus = () => {
     setOpenCheckStatus(false);
   };
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const requestBody = {
       username,
       password,
     };
-    try{
-      const response = await fetch(`${REST_BASE_URL}/account/token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-  
-      const data = await response.json();
-  
-      if (!response.ok) {
+
+    try {
+      const response = await axios.post(`${REST_BASE_URL}/account/token`, requestBody);
+
+      if (!response.data.token) {
         setOpenAlert(true);
       } else {
-        localStorage.setItem("token", `Bearer ${data.token}`);
-        navigate("/AudioBooks");
+        localStorage.setItem('token', `Bearer ${response.data.token}`);
+        navigate('/AudioBooks');
       }
-    }
-    catch(error){
+    } catch (error) {
       setOpenAlert(true);
     }
   };
 
-  const handleAlertClose = (_event?: React.SyntheticEvent | Event, _reason?: string) => { {
+  const handleAlertClose = (
+    _event?: React.SyntheticEvent | Event,
+    _reason?: string
+  ) => {
     setOpenAlert(false);
-  }}
-
-  // const [faceio, setFaceIO] = useState<any>(null);
-  // const [error, setError] = useState<any>(null);
-
-  // hook to initialize FaceIO instance when component mounts
-  // useEffect(()=>{
-  //   const initFaceIO = async() => {
-  //     try {
-  //       const faceioInstance = new faceio(/*TODO: Fill with the corresponding API KEY FROM .env*/);
-  //       setFaceIO(faceioInstance);
-  //     } catch (error) {
-  //       setError("Failed to initialize FaceIO: " + error.message);
-  //     }
-  //   }
-  // })
-
-  // // handle authentication of FaceIO
-  // const handleAuthenticate = async() => {
-  //   try {
-  //     const response = await faceio.authenticate({
-  //       locale: "auto",
-  //     });
-  //     // TODO: handle the payroll gotten from faceio to REST
-  //   } catch (error) {
-  //     setError("Authentication failed: " + error.message);
-  //   }
-  // }
+  };
 
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Alerts
-            open={openAlert}
-            handleClose={handleAlertClose}
-            title='Sign In Failed!'
-            description='Please check your username & password again.'
+          open={openAlert}
+          handleClose={handleAlertClose}
+          title="Sign In Failed!"
+          description="Please check your username & password again."
         />
-        <CheckStatusDialog
-            open={openCheckStatus} 
-            handleClose={handleCloseCheckStatus}
-        />
+        <CheckStatusDialog open={openCheckStatus} handleClose={handleCloseCheckStatus} />
         <Grid container component="main" sx={{ height: '100vh' }}>
           <Grid item xs={12} sm={6} md={4} component={Paper} elevation={6} square>
             <img
@@ -161,16 +127,6 @@ const SignIn = () => {
                 >
                   Sign In
                 </Button>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 1, mb: 2 }}
-                  color="primary"
-                  // onClick={handleAuthenticate}
-                  startIcon={<FaceIcon />}
-                >
-                  Sign In with Face ID
-                </Button>
                 <Grid container>
                   <Grid item>
                     <Link href="/SignUpPremium" variant="body2">
@@ -179,15 +135,15 @@ const SignIn = () => {
                   </Grid>
                   <Grid item>
                     <Button
-                    onClick={handleOpenCheckStatus}
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mt: 1 }}
-                    fullWidth
+                      onClick={handleOpenCheckStatus}
+                      variant="outlined"
+                      color="primary"
+                      sx={{ mt: 1 }}
+                      fullWidth
                     >
                       Already applied request? Check your request status
                     </Button>
-                </Grid>
+                  </Grid>
                 </Grid>
               </Box>
             </Box>
