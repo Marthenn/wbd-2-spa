@@ -32,8 +32,9 @@ import {
 
   const AudioBooks = () => {
     const [books, setBooks] = React.useState<Book[]>([]);
-    const [page, setPage] = React.useState(1)
-    const [pageCount, setPageCount] = React.useState(1)
+    const [page, setPage] = React.useState(1);
+    const [pageCount, setPageCount] = React.useState(1);
+    const [searchQuery, setSearchQuery] = React.useState('');
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
@@ -41,7 +42,7 @@ import {
   
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/${page}`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/${page}/${searchQuery}`);
         setBooks(response.data.books);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -50,9 +51,9 @@ import {
 
     const countPage = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/count`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/count/${searchQuery}`);
         console.log(response);
-        setPageCount(Math.ceil(response.data.bookCount.bookCount/8))
+        setPageCount(Math.ceil(response.data.bookCount/8))
         console.log(response.data.bookCount)
       } catch (error) {
         console.error('Error fetching book count:', error);
@@ -61,13 +62,15 @@ import {
 
     React.useEffect(() => {
       countPage();
-    }, []); 
+    }, [searchQuery]); 
   
     React.useEffect(() => {
       fetchBooks();
-    }, [page]); 
+    }, [page, searchQuery]); 
   
-    const onChange = (_e: React.SyntheticEvent) => {};
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(event.target.value)
+    };
   
     const bannerContent = [
       {
@@ -82,7 +85,7 @@ import {
     ];
   
     function HandleSearchButtonClick(_e: React.SyntheticEvent<Element, Event>): void {
-      throw new Error('Function not implemented.');
+      fetchBooks()
     }
   
     return (

@@ -20,16 +20,8 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import axios from 'axios';
 import { REST_BASE_URL } from '../constants/constants';
 
-const currentChapterDummy = {
-  id: '1',
-  title: 'Chapter 1',
-  content: 'Content',
-  audio_url: '',
-  duration: 2,
-}
-
 interface currentChapter {
-  id: string;
+  chapter_id: string;
   title: string;
   chapter_name: string;
   transcript_directory: string;
@@ -42,46 +34,55 @@ interface chaptersIdTitle {
 }
 
 const Read = () => {
-  const [chapters, setChapters] = useState<chaptersIdTitle[]>();
-  const [currentChapter, setCurrentChapter] = useState<currentChapter>();
-  const [value, setValue] = useState(chapters ? chapters[0]?.chapterId : -1);
+  const [chapters, setChapters] = useState<chaptersIdTitle[]>([]);
+  const [currentChapter, setCurrentChapter] = useState<currentChapter | null>(null);
+  const [value, setValue] = useState<number | null>(null);
   const { id } = useParams();
 
-  console.log(chapters);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapternames`);
+        setChapters(response.data.chapterNames);
 
-  const fetchChapterId = async () => {
-    try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapternames`);
-      setChapters(response.data.chapterNames);
-      setValue(response.data.chapterNames[0].chapterId.toString());
-    } catch (error) {
-      console.error('Error fetching books:', error);
-    }
-  }
-  const fetchChapter = async (chapterId: number) => {
-    try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
-      console.log(response.data.chapterDetails);
-      setCurrentChapter(response.data.chapterDetails);
-    } catch (error) {
-      console.error('Error fetching books:', error);
-    }
-  };
+        if (response.data.chapterNames.length > 0) {
+          setValue(response.data.chapterNames[0].chapterId);
+        } else {
+          setValue(-1);
+        }
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
-    fetchChapterId();
-  }, []);
-  
-  useEffect(() => {
-    fetchChapter(value);
-  }, [value]);
+    const fetchChapter = async () => {
+      try {
+        if (value !== null) {
+          const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${value}`);
+          setCurrentChapter(response.data.chapterDetails[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+
+    fetchChapter();
+  }, [id, value]);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  if (!currentChapter || !chapters || value === -1) {
+  if (value === null) {
     return <div>Loading...</div>;
+  }
+
+  if (value === -1 || !currentChapter || !chapters) {
+    return <div>No chapters available.</div>;
   }
 
   const currentChapterIndex = chapters.findIndex((chapter) => chapter.chapterId === value);
@@ -99,8 +100,6 @@ const Read = () => {
       setValue(nextChapterId);
     }
   };
-
-  console.log(currentChapter);
 
   return (
     <StyledEngineProvider injectFirst>
@@ -127,15 +126,15 @@ const Read = () => {
           <Link to={`/AudioBooks/${id}/Details`}>
             <ArrowBackRoundedIcon sx={{ fontSize: 40 }} />
           </Link>
-          <TabContext value={value.toString()}>
+          <TabContext value={(value.toString())}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} variant="scrollable" scrollButtons="auto">
                 {chapters.map((chapter) => (
-                  <Tab key={chapter.chapterId} label={chapter.chapterName} value={chapter.chapterId.toString()} />
+                  <Tab key={chapter.chapterId} label={chapter.chapterName} value={(chapter.chapterId.toString())} />
                 ))}
               </TabList>
             </Box>
-            <TabPanel key={currentChapter.id} value={currentChapter.id}>
+            <TabPanel key={currentChapter.chapter_id} value={currentChapter.chapter_id.toString()}>
               <Typography variant="h1">{currentChapter.title}</Typography>
               <Typography variant="h2">{currentChapter.chapter_name}</Typography>
               <Typography>{currentChapter.transcript_directory}</Typography>

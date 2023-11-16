@@ -80,6 +80,13 @@ const Profile = () => {
       setNewConfirmPassword(value);
     } else if (name === 'username'){
       setNewUsername(value);
+    } else if (name === 'username'){
+      if(!value){
+        setUsernameError('Username cannot be empty')
+      } else {
+        setUsernameError('')
+      }
+      setNewUsername(value);
     }
   };
   
@@ -108,6 +115,7 @@ const Profile = () => {
   const [emailError, setEmailError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');  
+  const [usernameError, setUsernameError] = useState<string>('');
 
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -236,6 +244,7 @@ const Profile = () => {
                 />
               </Box>
             )}
+            <form>
             <TextField
               margin="normal"
               required
@@ -261,6 +270,8 @@ const Profile = () => {
               autoComplete="username"
               value={newUsername ? newUsername : username}
               onChange={handleInputChange}
+              error={!!usernameError}
+              helperText={usernameError}
             />
             <TextField
               margin="normal"
@@ -290,6 +301,7 @@ const Profile = () => {
               error={!!confirmPasswordError}
               helperText={confirmPasswordError}
             />
+            </form>
             <Box
               sx={{
                 display: 'flex',
