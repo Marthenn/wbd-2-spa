@@ -20,30 +20,52 @@ import {
   import RoundedButton from '../components/Button/RoundedButton';
   import axios from 'axios';  // Add this line
   import { REST_BASE_URL } from '../constants/constants';
+  
   interface Book {
-    id: number;
+    book_id: number;
     title: string;
-    rating: number;
-    duration: number;
+    averageRating: number;
+    duration: string;
+    author: string;
+    cover_image_directory: string;
   }
 
   const AudioBooks = () => {
     const [books, setBooks] = React.useState<Book[]>([]);
+    const [page, setPage] = React.useState(1)
+    const [pageCount, setPageCount] = React.useState(1)
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+    };
   
-    // Function to fetch books from the server
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/fetch`);
-        console.log(response.data);
+        const response = await axios.get(`${REST_BASE_URL}api/book/${page}`);
         setBooks(response.data.books);
       } catch (error) {
         console.error('Error fetching books:', error);
       }
     };
+
+    const countPage = async () => {
+      try {
+        const response = await axios.get(`${REST_BASE_URL}api/book/count`);
+        console.log(response);
+        setPageCount(Math.ceil(response.data.bookCount.bookCount/8))
+        console.log(response.data.bookCount)
+      } catch (error) {
+        console.error('Error fetching book count:', error);
+      }
+    };
+
+    React.useEffect(() => {
+      countPage();
+    }, []); 
   
     React.useEffect(() => {
       fetchBooks();
-    }, []);  // Fetch books when the component mounts
+    }, [page]); 
   
     const onChange = (_e: React.SyntheticEvent) => {};
   
@@ -98,7 +120,7 @@ import {
               <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid container spacing={{ xs: 0, md: 3 }} justifyContent="center" alignItems="center">
                   {books.map((book) => (
-                    <Grid item key={book.id} xs={12} sm={6} md={4} lg={3} style={{ paddingLeft: 0 }}>
+                    <Grid item key={book.book_id} xs={12} sm={6} md={4} lg={3} style={{ paddingLeft: 0 }}>
                       <Box
                         sx={{
                           display: 'flex',
@@ -107,12 +129,12 @@ import {
                         }}
                       >
                         <BookCard
-                          details_url={`/AudioBooks/${book.id}/Details`}
+                          details_url={`/AudioBooks/${book.book_id}/Details`}
                           title={book.title}
-                          author=''
-                          rating={book.rating}
+                          author={book.author}
+                          rating={book.averageRating.toFixed(1)}
                           duration={book.duration}
-                          cover=''
+                          cover={book.cover_image_directory}
                         />
                       </Box>
                     </Grid>
@@ -120,7 +142,7 @@ import {
                 </Grid>
               </Container>
             </Container>
-            <Pagination count={5} color="primary" sx={{ margin: '20px auto' }} />
+            <Pagination count={pageCount} color="primary" sx={{ margin: '20px auto' }} onChange={handlePageChange}/>
           </Container>
         </ThemeProvider>
       </StyledEngineProvider>

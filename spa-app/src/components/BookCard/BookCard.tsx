@@ -3,6 +3,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { Container, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import coverPlaceholder from '../../assets/cover-placeholder.png';
+import { convertTimeToMinutes } from '../../utils/formatTime';
 
 const BookCard = ({
   details_url,
@@ -15,8 +16,8 @@ const BookCard = ({
   details_url: string;
   title: string;
   author: string;
-  rating: number;
-  duration: number;
+  rating: string;
+  duration: string;
   cover: string;
 }) => {
   cover = cover == "" ? coverPlaceholder : cover;
@@ -30,12 +31,12 @@ const BookCard = ({
             </div>
           </Grid>
           <Grid item container spacing={0} columns={{ xs: 10 }} alignItems="center">
-            <Grid item xs={8}>
+            <Grid item xs={6}>
               <Typography variant="h5" className={styles.title}>
                 {title}
               </Typography>
             </Grid>
-            <Grid item container spacing={0} xs={2} justifyContent="flex-end" alignItems="center">
+            <Grid item container spacing={0} xs={4} justifyContent="flex-end" alignItems="center">
               <Grid item xs={0}>
                 <StarIcon sx={{color: "#faaf00"}}/>
               </Grid>
@@ -54,7 +55,7 @@ const BookCard = ({
             </Grid>
             <Grid item xs={4}>
               <Typography variant="body2" className={styles.duration}>
-                {duration} min
+                {convertTimeToMinutes(duration)} min
               </Typography>
             </Grid>
           </Grid>

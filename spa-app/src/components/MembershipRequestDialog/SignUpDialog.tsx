@@ -10,7 +10,6 @@ import {
   Grid,
   Paper,
   TextField,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import PaymentDialog from "./PaymentDialog";
@@ -29,14 +28,12 @@ const SignUpDialog = ({
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    // Removed password and confirmPassword
     paymentProof: null,
   });
 
   const [formErrors, setFormErrors] = useState({
     username: "",
     email: "",
-    // Removed password and confirmPassword
     paymentProof: null,
   });
 
@@ -131,12 +128,9 @@ const SignUpDialog = ({
                     autoFocus
                     onChange={handleFormChange}
                     value={formData.username}
+                    error={!!formErrors.username}
+                    helperText={formErrors.username}
                   />
-                  {formErrors.username && (
-                    <Typography variant="body2" color="error">
-                      {formErrors.username}
-                    </Typography>
-                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -148,21 +142,8 @@ const SignUpDialog = ({
                     autoComplete="email"
                     onChange={handleFormChange}
                     value={formData.email}
-                  />
-                  {formErrors.email && (
-                    <Typography variant="body2" color="error">
-                      {formErrors.email}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration and promotions via email."
+                    error={!!formErrors.email}
+                    helperText={formErrors.email}
                   />
                 </Grid>
               </Grid>

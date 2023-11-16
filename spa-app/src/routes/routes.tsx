@@ -11,7 +11,7 @@ import {
   import MembershipRequests from "../pages/admin/MembershipRequests"
   import ProfileAdmin from "../pages/admin/ProfileAdmin"
   import Profile from "../pages/Profile"
-  import EditTranscript from "../pages/admin/EditTranscript"
+  import EditTranscript from "../pages/admin/EditTranscript.tsx"
   import NotFound from "../pages/NotFound.tsx";
   
   export const router = createBrowserRouter([

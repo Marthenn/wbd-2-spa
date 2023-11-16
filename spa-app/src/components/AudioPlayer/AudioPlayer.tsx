@@ -4,13 +4,12 @@ import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledR
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import theme from "../../theme/theme";
 import { useEffect, useRef, useState } from "react";
+import { formatTime } from "../../utils/formatTime";
 
 const AudioPlayer = ({
     audio_url,
-    duration,
 }: {
     audio_url: string;
-    duration: number;
 }) => {
     const [position, setPosition] = useState(0);
     const [paused, setPaused] = useState(false);
@@ -56,13 +55,6 @@ const AudioPlayer = ({
         }
     };
 
-    function formatDuration(value: number) {
-        const minute = Math.floor(value / 60);
-        const seconds = value - minute * 60;
-        const formattedSeconds = seconds.toFixed(2).split(".")[1]; // Keep two digits after the decimal point
-        return `${minute}:${formattedSeconds}`;
-      }      
-
     return (
         <Box className={styles.audioPlayer}>
             <audio ref={audioPlayer} src={audio_url} />
@@ -91,13 +83,13 @@ const AudioPlayer = ({
                     width: 27,
                 }}
             >
-                <TinyText>{formatDuration(position)}</TinyText>
+                <TinyText>{formatTime(position)}</TinyText>
             </Box>
             <Slider
                 aria-label="time-indicator"
                 value={position}
                 min={0}
-                max={duration}
+                max={audioPlayer.current ? audioPlayer.current.duration : 0}
                 onChange={(_, value) => {
                     setPosition(value as number);
                     if (audioPlayer.current) {
@@ -119,7 +111,7 @@ const AudioPlayer = ({
                 }}
             >
                 <TinyText>
-                    -{formatDuration(duration - position)}
+                    -{formatTime((audioPlayer.current ? audioPlayer.current.duration : 0) - position)}
                 </TinyText>
             </Box>
         </Box>

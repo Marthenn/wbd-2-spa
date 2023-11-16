@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/NavBar/Navbar';
 import BookCover from '../components/BookCard/BookCover';
 import RoundedButton from '../components/Button/RoundedButton';
-import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import StarIcon from '@mui/icons-material/Star';
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
@@ -23,15 +22,24 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import audio_url from '../../2.mp3'
 import { Link } from 'react-router-dom';
+import { REST_BASE_URL } from '../constants/constants';
+import axios from 'axios';
+import { convertTimeToMinutes } from '../utils/formatTime';
 
-function convertTimeToMinutes(time: string) {
-  const [hours, minutes, _seconds] = time.split(':');
-  const totalMinutes = parseInt(hours, 10) * 60 + parseInt(minutes, 10);
-  return totalMinutes;
+interface BookDetails {
+  title: string;
+  description: string;
+  duration: string;
+  author: string;
+  category: string;
+  book_id: number;
+  cover_image_directory: string;
+  averageRating: number;
 }
 
 const AudioBookDetails = () => {
   const navigate = useNavigate();
+  const [bookDetails, setBookDetails] = useState<BookDetails>();
   const { id } = useParams();
 
   const data = {
@@ -43,17 +51,28 @@ const AudioBookDetails = () => {
     duration: '02:30:00',
     rating: 4.5,
     audio_directory: audio_url,
-    curr_duration: '00:30:00',
-    currentTotalSeconds: 1800,
-    totalSeconds: 9000,
     bid: 1,
   };
 
   const [value, setValue] = useState<number | null>(data.rating);
   const [isBookmarkAdded, setIsBookmarkAdded] = useState(false);
 
+  const fetchDetails = async () => {
+    try {
+      const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}`);
+      console.log(response.data);
+      setBookDetails(response.data.bookDetails);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetails();
+  }, []); 
+
   const handleRead = () => {
-    navigate(`/AudioBooks/${data.bid}/Read`);
+    navigate(`/AudioBooks/${id}/Read`);
   };
 
   const handleBookmarkToggle = () => {
@@ -99,7 +118,7 @@ const AudioBookDetails = () => {
           >
             <Grid container spacing={{ xs: 0, sm: 3 }} justifyContent="space-between" alignItems="start" sx={{ width: '100%', padding: '16px' }}>
               <Grid item xs={12}>
-                <Typography variant="h2">{data.title}</Typography>
+                <Typography variant="h2">{bookDetails?.title}</Typography>
               </Grid>
               <Grid item xs={12} sm={5} md={3}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 'max-content' }}>
@@ -129,32 +148,31 @@ const AudioBookDetails = () => {
               <Grid item xs={12} sm={7} md={9}>
                 <Box p={2}>
                   <Typography variant="h5">Description</Typography>
-                  <Typography>{data.description}</Typography>
+                  <Typography>{bookDetails?.description}</Typography>
                   <Typography variant="h5" marginTop={2}>
                     Author
                   </Typography>
-                  <Typography>{data.author}</Typography>
+                  <Typography>{bookDetails?.author}</Typography>
                   <Typography variant="h5" marginTop={2}>
                     Category
                   </Typography>
-                  <Typography>{data.category}</Typography>
+                  <Typography>{bookDetails?.category}</Typography>
                   <Typography variant="h5" marginTop={2}>
                     Duration
                   </Typography>
-                  <Typography>{convertTimeToMinutes(data.duration)} min</Typography>
+                  <Typography>{bookDetails && convertTimeToMinutes(bookDetails.duration)} min</Typography>
                   <Typography variant="h5" marginTop={2}>
                     Rating
                   </Typography>
                   <Box display="flex" alignItems="center">
                     <StarIcon sx={{ color: '#faaf00' }} />
-                    <Typography>{data.rating.toFixed(2)}</Typography>
+                    <Typography>{bookDetails?.averageRating.toFixed(2)}</Typography>
                   </Box>
                 </Box>
               </Grid>
             </Grid>
           </Container>
         </Container>
-        <AudioPlayer audio_url={data.audio_directory} duration={1000} />
       </ThemeProvider>
     </StyledEngineProvider>
   );
