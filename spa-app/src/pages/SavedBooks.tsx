@@ -21,6 +21,10 @@ import {
   import axios from 'axios';  // Add this line
   import { REST_BASE_URL } from '../constants/constants';
 import { getToken } from '../utils/token';
+import { decodeToken, isExpired } from 'react-jwt';
+import { useNavigate } from 'react-router-dom';
+
+const token = getToken();
   
   interface Book {
     book_id: number;
@@ -30,20 +34,47 @@ import { getToken } from '../utils/token';
     author: string;
     cover_image_directory: string;
   }
+  interface DecodedToken {
+    uid: number;
+    isAdmin: boolean;
+    username: string;
+    profilePicDirectry: string;
+    email: string;
+    exp: number;
+    iat: number;
+  }
 
   const FavoriteBooks = () => {
     const [books, setBooks] = React.useState<Book[]>([]);
     const [page, setPage] = React.useState(1);
     const [pageCount, setPageCount] = React.useState(1);
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [uid, setUid] = React.useState(0);
+    const navigate = useNavigate();
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
     };
+
+    React.useEffect(() => {
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const decodedToken = decodeToken(token) as DecodedToken;
+  
+      const isMyTokenExpired = isExpired(token) as boolean;
+      
+      setUid(decodedToken.uid);
+  
+      if(isMyTokenExpired){
+        navigate('/SignIn')
+      }
+    }, []);
   
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/${page}/${searchQuery}`, {headers: {
+        const response = await axios.get(`${REST_BASE_URL}api/favoritebook/${uid}/${page}/${searchQuery}`, {headers: {
           "Authorization": getToken()}});
         setBooks(response.data.books);
       } catch (error) {
@@ -53,7 +84,7 @@ import { getToken } from '../utils/token';
 
     const countPage = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/count/${searchQuery}`, {headers: {
+        const response = await axios.get(`${REST_BASE_URL}api/favoritebook/count/${uid}/${searchQuery}`, {headers: {
           "Authorization": getToken()}});
         console.log(response);
         setPageCount(Math.ceil(response.data.bookCount/8))

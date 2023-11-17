@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Avatar, IconButton, Menu, MenuItem, Toolbar, useMediaQuery } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import logo from '../../assets/logo.svg';
 import styles from './navbar.module.css';
 import theme from '../../theme/theme.tsx';
+import { getToken } from '../../utils/token';
+import { decodeToken, isExpired } from 'react-jwt';
+
+
+interface DecodedToken {
+  uid: number;
+  isAdmin: boolean;
+  username: string;
+  profilePicDirectry: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
+
+const token = getToken();
 
 const Navbar = ({
   category,
@@ -12,7 +27,7 @@ const Navbar = ({
   userPhoto,
 }: {
   category: string;
-  username: string;
+  username?: string;
   userPhoto: string;
 }) => {
   const isSMOrSmaller = useMediaQuery (theme.breakpoints.down('sm'));
@@ -40,6 +55,22 @@ const Navbar = ({
       ['Membership Requests', '/admin/MembershipRequests'],
     ];
   }
+
+  useEffect(() => {
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const decodedToken = decodeToken(token) as DecodedToken;
+
+    const isMyTokenExpired = isExpired(token) as boolean;
+
+    username = decodedToken.username;
+
+    if(isMyTokenExpired){
+      navigate('/SignIn')
+    }
+  }, []);
 
   return (
     <AppBar
@@ -90,7 +121,7 @@ const Navbar = ({
             </Avatar>
           ) : (
             <Avatar sx={{ width: 25, height: 25 }}>
-              {username.charAt(0).toUpperCase()}
+              {username?.charAt(0).toUpperCase()}
             </Avatar>
           )}
           <Link

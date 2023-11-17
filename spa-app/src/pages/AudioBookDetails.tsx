@@ -25,6 +25,19 @@ import { REST_BASE_URL } from '../constants/constants';
 import axios from 'axios';
 import { convertTimeToMinutes } from '../utils/formatTime';
 import { getToken } from '../utils/token';
+import { decodeToken, isExpired } from 'react-jwt';
+
+const token = getToken();
+
+interface DecodedToken {
+  uid: number;
+  isAdmin: boolean;
+  username: string;
+  profilePicDirectry: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
 
 interface BookDetails {
   title: string;
@@ -40,11 +53,28 @@ interface BookDetails {
 const AudioBookDetails = () => {
   const navigate = useNavigate();
   const [bookDetails, setBookDetails] = useState<BookDetails>();
+  const [uid, setUid] = useState(0);
   const { id } = useParams();
 
   const [ratingStatus, setRatingStatus] = useState<boolean>(false);
   const [value, setValue] = useState<number | null>(0);
   const [isBookmarkAdded, setIsBookmarkAdded] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const decodedToken = decodeToken(token) as DecodedToken;
+
+    const isMyTokenExpired = isExpired(token) as boolean;
+    
+    setUid(decodedToken.uid);
+
+    if(isMyTokenExpired){
+      navigate('/SignIn')
+    }
+  }, []);
 
   const fetchDetails = async () => {
     try {
@@ -62,7 +92,7 @@ const AudioBookDetails = () => {
 
   const fetchFavoriteStatus = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`,
+      const response = await axios.get(`${REST_BASE_URL}api/book/favoritestatus/${uid}/${id}`,
       { headers: {
         "Authorization": getToken()
       }}
@@ -76,7 +106,7 @@ const AudioBookDetails = () => {
 
   const fetchRatingStatus = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`,
+      const response = await axios.get(`${REST_BASE_URL}api/book/rating/${uid}/${id}`,
       { headers: {
         "Authorization": getToken()
       }}
@@ -91,16 +121,33 @@ const AudioBookDetails = () => {
   const updateRating = async () => {
     try {
       if(ratingStatus) {
-        const response = await axios.put(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value}, 
+        const response = await axios.put(`${REST_BASE_URL}api/book/rating/${uid}/${id}`, {rating: value}, 
         { headers: {
           "Authorization": getToken()
         }});
         console.log(response.data);
       } else {
-        const response = await axios.post(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value}, 
+        const response = await axios.post(`${REST_BASE_URL}api/book/rating/${uid}/${id}`, {rating: value}, 
         { headers: {
           "Authorization": getToken()
         }});
+        console.log(response.data);
+      }  
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
+
+  const updateBookmark = async () => {
+    try {
+      if(isBookmarkAdded) {
+        const response = await axios.post(`${REST_BASE_URL}api/favoritebook/${uid}${id}`, {rating: value}, 
+        { headers: {
+          "Authorization": getToken()
+        }});
+        console.log(response.data);
+      } else {
+        const response = await axios.delete(`${REST_BASE_URL}api/favoritebook/${uid}${id}`);
         console.log(response.data);
       }  
     } catch (error) {
@@ -112,12 +159,15 @@ const AudioBookDetails = () => {
     fetchFavoriteStatus();
     fetchRatingStatus();
     fetchDetails();
-
   }, []); 
 
   useEffect(() => {
     updateRating();
   }, [value]); 
+
+  useEffect(() => {
+    updateBookmark();
+  }, [isBookmarkAdded]); 
 
   const handleRead = () => {
     navigate(`/AudioBooks/${id}/Read`);

@@ -16,6 +16,7 @@ import {
   import AddTranscript from "../pages/admin/AddTranscript.tsx"
   import FavoriteBooks from "../pages/SavedBooks.tsx"
   import NotFound from "../pages/NotFound.tsx";
+  import ProtectedRoute from "./ProtectedRoute.tsx"
   
   export const router = createBrowserRouter([
     {
@@ -40,15 +41,27 @@ import {
     },
     {
       path: "/admin/EditTranscript",
-      element: <EditTranscriptList/>
+      element: (
+        <ProtectedRoute role={true} >
+          <EditTranscriptList/>
+        </ProtectedRoute>
+      )
     },
     {
       path: "/admin/EditTranscript/:id/Edit/:chapterId",
-      element: <EditTranscript/>
+      element: (
+        <ProtectedRoute role={true} >
+          <EditTranscript/>
+        </ProtectedRoute>
+      )
     },
     {
       path: "/admin/EditTranscript/:id/Add",
-      element: <AddTranscript/>
+      element: (
+        <ProtectedRoute role={true} >
+          <AddTranscript/>
+        </ProtectedRoute>
+      )
     },
     {
       path: "/FavoriteBooks",
@@ -56,15 +69,28 @@ import {
     },
     {
       path: "/admin/EditTranscript/:id/SelectChapter",
-      element: <SelectChapter/>
+      element: (
+        <ProtectedRoute role={true} >
+          <SelectChapter/>
+        </ProtectedRoute>
+      )
     },
     {
       path: "/admin/MembershipRequests",
-      element: <MembershipRequests/>
+      element: (
+        <ProtectedRoute role={true} >
+          <MembershipRequests/>
+        </ProtectedRoute>
+      )
     },
     {
       path: "/admin/Profile",
-      element: <ProfileAdmin/>
+      element: (
+      <ProtectedRoute role={true} >
+        <ProfileAdmin/>
+      </ProtectedRoute>
+      
+      )
     },
     {
       path: "/Profile",
