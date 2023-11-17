@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import Alerts from '../components/Alerts/Alerts';
 import { REST_BASE_URL } from '../constants/constants';
 import axios from 'axios';
+import { setToken } from '../utils/token';
 
 const SignIn = () => {
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
@@ -46,7 +47,7 @@ const SignIn = () => {
       if (!response.data.token) {
         setOpenAlert(true);
       } else {
-        localStorage.setItem('token', `Bearer ${response.data.token}`);
+        setToken(`Bearer ${response.data.token}`);
         navigate('/AudioBooks');
       }
     } catch (error) {

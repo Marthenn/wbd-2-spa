@@ -9,7 +9,7 @@ const Alerts = ({
   open: boolean;
   handleClose: () => void;
   title: string;
-  description: string;
+  description?: string;
 }) => {
   return (
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical:'top',  horizontal:'left' }}>
