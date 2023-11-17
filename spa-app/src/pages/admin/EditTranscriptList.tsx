@@ -111,7 +111,7 @@ const EditTranscriptList = () => {
                       }}
                     >
                       <BookCard
-                        details_url={`/admin/EditTranscript/${book.book_id}/Edit`}
+                        details_url={`/admin/EditTranscript/${book.book_id}/SelectChapter`}
                         title={book.title}
                         author={book.author}
                         rating={book.averageRating.toFixed(1)}

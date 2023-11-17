@@ -25,24 +25,10 @@ interface Chapter {
   audio_directory: string;
 }
 
-const EditTranscript = () => {
-  const { id, chapterId } = useParams();
+const AddTranscript = () => {
+  const { id } = useParams();
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const [openEditAlert, setOpenEditAlert] = useState(false);
-
-  useEffect(() => {
-    const fetchChapter = async () => {
-      try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
-        setCurrentChapter(response.data.chapterDetails[0]);
-      } catch (error) {
-        console.error('Error fetching chapter:', error);
-      }
-    };
-
-    fetchChapter();
-  }, [id, chapterId]);
+  const [openAddAlert, setOpenAddAlert] = useState(false);
 
   const handleChapterTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentChapter({
@@ -66,36 +52,19 @@ const EditTranscript = () => {
     });
   };
 
-  const handleDeleteChapter = async() => {
-    try {
-      const response = await axios.delete(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
-      if(response.data.message === 'success') {
-        setOpenDeleteAlert(true);
-      }
-    } catch (error) {
-      console.error('Error deleting chapter:', error);
-    }
-  };
-
   const handleSaveChanges = async() => {
     try {
-      const response = await axios.put(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
+      const response = await axios.post(`${REST_BASE_URL}api/book/details/${id}/chapter`);
       if(response.data.message === 'success') {
-        setOpenEditAlert(true);
+        setOpenAddAlert(true);
       }
     } catch (error) {
       console.error('Error editing chapter:', error);
     }
   };  
-
-  const handleDeleteAlertClose = (
+  const handleAddAlertClose = (
   ) => {
-    setOpenDeleteAlert(false);
-  };
-
-  const handleEditAlertClose = (
-  ) => {
-    setOpenEditAlert(false);
+    setOpenAddAlert(false);
   };
 
   return (
@@ -103,14 +72,9 @@ const EditTranscript = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Alerts
-          open={openDeleteAlert}
-          handleClose={handleDeleteAlertClose}
-          title="Chapter Deleted!"
-        />
-        <Alerts
-          open={openEditAlert}
-          handleClose={handleEditAlertClose}
-          title="Chapter Edited!"
+          open={openAddAlert}
+          handleClose={handleAddAlertClose}
+          title="Chapter Added!"
         />
         <Navbar category="admin" username="user#placeholder" userPhoto="" />
         <Container
@@ -133,7 +97,7 @@ const EditTranscript = () => {
           <Link to={`/admin/EditTranscript/${id}/SelectChapter`}>
             <ArrowBackRoundedIcon sx={{ fontSize: 40 }} />
           </Link>
-          <Typography variant="h1">Book Title: {currentChapter?.chapter_id}</Typography>
+          <Typography variant="h1">Book Title: New Chapter</Typography>
               <TextField
                 label="Chapter Title"
                 value={currentChapter?.chapter_name || ''}
@@ -160,15 +124,7 @@ const EditTranscript = () => {
                 color="primary"
                 sx={{ marginTop: '20px', width: '150px' }}
               >
-                Save Changes
-              </Button>
-              <Button
-                onClick={handleDeleteChapter}
-                variant="contained"
-                color="error"
-                sx={{ marginTop: '20px', width: '150px' }}
-              >
-                Delete Chapter
+                Add Chapter
               </Button>
         </Container>
         <AudioPlayer audio_url={currentChapter?.audio_directory || ''} />
@@ -177,4 +133,4 @@ const EditTranscript = () => {
   );
 };
 
-export default EditTranscript;
+export default AddTranscript;

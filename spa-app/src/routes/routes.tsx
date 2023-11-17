@@ -12,6 +12,8 @@ import {
   import ProfileAdmin from "../pages/admin/ProfileAdmin"
   import Profile from "../pages/Profile"
   import EditTranscript from "../pages/admin/EditTranscript.tsx"
+  import SelectChapter from "../pages/admin/SelectChapter.tsx"
+  import AddTranscript from "../pages/admin/AddTranscript.tsx"
   import NotFound from "../pages/NotFound.tsx";
   
   export const router = createBrowserRouter([
@@ -40,8 +42,16 @@ import {
       element: <EditTranscriptList/>
     },
     {
-      path: "/admin/EditTranscript/:id/Edit",
+      path: "/admin/EditTranscript/:id/Edit/:chapterId",
       element: <EditTranscript/>
+    },
+    {
+      path: "/admin/EditTranscript/:id/Add",
+      element: <AddTranscript/>
+    },
+    {
+      path: "/admin/EditTranscript/:id/SelectChapter",
+      element: <SelectChapter/>
     },
     {
       path: "/admin/MembershipRequests",
