@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Typography,
   ThemeProvider,
@@ -25,6 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import placeHolder from '../../assets/cover-placeholder.png';
 import CheckIcon from '@mui/icons-material/Check';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Fragment } from 'react';
 
 const data = [
   { uid: 1, username: 'user1', email: 'user1@gmail.com', requestDate: '01/01/2023', status: 0, paymentProof: '/' },
@@ -32,9 +33,9 @@ const data = [
 ];
 
 const MembershipRequests = () => {
-  const [rows, setRows] = React.useState(data);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = useState(data);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (_event: any, newPage: React.SetStateAction<number>) => {
     setPage(newPage);
@@ -106,7 +107,7 @@ const MembershipRequests = () => {
                 </TableHead>
                 <TableBody>
                   {visibleRows.map((row) => (
-                    <React.Fragment key={row.uid}>
+                    <Fragment key={row.uid}>
                       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                         <TableCell component="th" scope="row">
                           {row.uid}
@@ -152,7 +153,7 @@ const MembershipRequests = () => {
                           </Accordion>
                         </TableCell>
                       </TableRow>
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </TableBody>
               </Table>

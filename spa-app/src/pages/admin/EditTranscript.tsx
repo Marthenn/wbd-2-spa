@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React, { useState, useEffect, ChangeEventHandler } from 'react';
 import {
   Box,
+  Button,
   Container,
   CssBaseline,
   StyledEngineProvider,
   Tab,
+  TextField,
   ThemeProvider,
   Typography,
-  TextField,
-  Button,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -20,156 +20,132 @@ import RoundedButton from '../../components/Button/RoundedButton';
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
-const chapters: any[] = [
+const chapters = [
   {
     id: '1',
     title: 'Chapter 1',
-    content: 'Content for Chapter 1...',
-    audio_url: 'URL_FOR_CHAPTER_1_AUDIO',
-    duration: 100,
+    content: 'Lorem ipsum dolor sit amet.',
+    audio_url: 'example.mp3',
+    duration: 120,
   },
   {
     id: '2',
     title: 'Chapter 2',
-    content: 'Content for Chapter 2...',
-    audio_url: 'URL_FOR_CHAPTER_2_AUDIO',
-    duration: 100,
+    content: 'Consectetur adipiscing elit.',
+    audio_url: 'example2.mp3',
+    duration: 150,
   },
 ];
 
+interface Chapter {
+  id: string;
+  title: string;
+  content: string;
+  audio_url: string;
+  duration: number;
+}
+
 const EditTranscript = () => {
-  const [value, setValue] = React.useState(chapters.length > 0 ? chapters[0].id : '0');
   const { id } = useParams();
+  const [value, setValue] = useState(chapters[0].id);
+  const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
+  const [editedCurrentChapter, setEditedCurrentChapter] = useState<Chapter | null>(null);
 
-  const [editedChapters, setEditedChapters] = React.useState(
-    chapters.map((chapter) => ({ ...chapter }))
-  );
+  const fetchData = async (chapterId: string) => {
+    const data = chapters.find((chapter) => chapter.id === chapterId) || null;
+    setCurrentChapter(data);
+    setEditedCurrentChapter(data);
+  };
 
-  const [newChapter, setNewChapter] = React.useState<{
-    title: string;
-    content: string;
-    audio: File | null | undefined; // Add undefined to the type
-  }>({
-    title: 'Untitled Chapter',
-    content: '',
-    audio: null,
-  });
-
-  const [isEditMode, setIsEditMode] = React.useState(false);
+  useEffect(() => {
+    fetchData(value);
+  }, [value]);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    setIsEditMode(false);
   };
 
-  const currentChapterIndex = chapters.findIndex((chapter) => chapter.id === value);
-
   const handlePrevChapter = () => {
+    const currentChapterIndex = chapters.findIndex((chapter) => chapter.id === value);
     if (currentChapterIndex > 0) {
       const prevChapterId = chapters[currentChapterIndex - 1].id;
       setValue(prevChapterId);
-      setIsEditMode(false);
     }
   };
 
   const handleNextChapter = () => {
+    const currentChapterIndex = chapters.findIndex((chapter) => chapter.id === value);
     if (currentChapterIndex < chapters.length - 1) {
       const nextChapterId = chapters[currentChapterIndex + 1].id;
       setValue(nextChapterId);
-      setIsEditMode(false);
     }
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const updatedChapters = [...editedChapters];
-    updatedChapters[index] = {
-      ...updatedChapters[index],
-      title: event.target.value,
-    };
-    setEditedChapters(updatedChapters);
-    setIsEditMode(true);
-  };
-
-  const handleContentChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const updatedChapters = [...editedChapters];
-    updatedChapters[index] = {
-      ...updatedChapters[index],
-      content: event.target.value,
-    };
-    setEditedChapters(updatedChapters);
-    setIsEditMode(true);
-  };
-
-  const handleAudioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setNewChapter({
-      ...newChapter,
-      audio: file,
-    });
-    setIsEditMode(true);
-  };
-
-  const handleNewChapterTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewChapter({
-      ...newChapter,
-      title: event.target.value,
-    });
-  };
-
-  const handleNewChapterContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewChapter({
-      ...newChapter,
-      content: event.target.value,
-    });
-  };
-
-const handleAddChapter = () => {
-    const addedChapter = {
+  const handleAddChapter = () => {
+    const newChapter: Chapter = {
       id: `${chapters.length + 1}`,
-      title: newChapter.title,
-      content: newChapter.content,
-    };
-  
-    chapters.push(addedChapter);
-    const updatedEditedChapters = [...editedChapters, { ...addedChapter }];
-    setEditedChapters(updatedEditedChapters);
-  
-    setValue(addedChapter.id);
-    setNewChapter({
-      title: 'Untitled Chapter',
+      title: 'New Chapter',
       content: '',
-      audio: null,
-    });
-    setIsEditMode(true);
+      audio_url: '',
+      duration: 0,
+    };
+
+    chapters.push(newChapter);
+
+    setCurrentChapter(newChapter);
+    setEditedCurrentChapter(newChapter);
+    setValue(newChapter.id);
+  };
+
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const newTitle = e.target.value;
+    setEditedCurrentChapter((prevChapter: Chapter | null) => ({
+      ...prevChapter!,
+      title: newTitle,
+    }));
   };
   
 
-  const handleDeleteChapter = (chapterId: string) => {
-    const chapterIndex = chapters.findIndex((chapter) => chapter.id === chapterId);
-    if (chapterIndex !== -1) {
-      chapters.splice(chapterIndex, 1);
-      const nextChapterId = chapters.length > 0 ? chapters[0].id : '0';
-      setValue(nextChapterId);
-      setIsEditMode(false);
+  const handleContentChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const newContent = e.target.value;
+    setEditedCurrentChapter((prevChapter) => ({
+      ...prevChapter!,
+      content: newContent,
+    }));
+  };
+
+  const handleAudioChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const newAudioUrl = e.target.value;
+    setEditedCurrentChapter((prevChapter) => ({
+      ...prevChapter!,
+      audio_url: newAudioUrl,
+    }));
+  };
+
+  const handleDeleteChapter = () => {
+    const indexToDelete = chapters.findIndex((chapter) => chapter.id === currentChapter?.id);
+    
+    if (indexToDelete !== -1) {
+      chapters.splice(indexToDelete, 1);
+
+      const newIndex = Math.min(indexToDelete, chapters.length - 1);
+      setValue(chapters[newIndex].id);
     }
   };
 
   const handleSaveChanges = () => {
-    const updatedChapters = [...chapters];
-    console.log(updatedChapters);
-    editedChapters.forEach((editedChapter) => {
-      const editedIndex = updatedChapters.findIndex((chapter) => chapter.id === editedChapter.id);
-      if (editedIndex !== -1) {
-        updatedChapters[editedIndex] = {
-          ...updatedChapters[editedIndex],
-          title: editedChapter.title,
-          content: editedChapter.content,
-        };
-      }
-    });
-    chapters.splice(0, chapters.length, ...updatedChapters);
-    setIsEditMode(false);
+    const indexToUpdate = chapters.findIndex((chapter) => chapter.id === currentChapter?.id);
+
+    if (indexToUpdate !== -1 && editedCurrentChapter) {
+      chapters[indexToUpdate] = { ...editedCurrentChapter };
+
+      setCurrentChapter({ ...editedCurrentChapter });
+    }
   };
+
+  if (!currentChapter) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -199,116 +175,68 @@ const handleAddChapter = () => {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} variant="scrollable" scrollButtons="auto">
-                {chapters.map((chapter, index) => (
-                  <Tab
-                    key={chapter.id}
-                    label={(isEditMode && chapter.id === value && editedChapters[index])
-                      ? editedChapters[index].title
-                      : chapter.title
-                    }
-                    value={chapter.id}
-                  />
+                {chapters.map((chapter) => (
+                  <Tab key={chapter.id} label={chapter.title} value={chapter.id} />
                 ))}
-                <Tab key="new" label="+ Add Chapter" onClick={handleAddChapter} value="new" />
+                <Tab onClick={handleAddChapter} key="new" label="+ Add Chapter" value="new" />
               </TabList>
             </Box>
-            {chapters.map((chapter, index) => (
-              <TabPanel key={chapter.id} value={chapter.id} sx={{ display: value === chapter.id ? 'flex' : 'none', flexDirection: 'column' }}>
-                <Typography variant="h1">Book Title</Typography>
-                <TextField
-                  label="Chapter Title"
-                  value={editedChapters[index].title}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleTitleChange(event, index)}
-                  sx={{ marginTop: '20px', width: '40%' }}
-                />
-                <TextField
-                  label="Chapter Content"
-                  multiline
-                  rows={4}
-                  value={editedChapters[index].content}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleContentChange(event, index)}
-                  sx={{ marginTop: '20px', width: '70%' }}
-                />
-                <input
-                  type="file"
-                  accept="audio/*"
-                  onChange={handleAudioChange}
-                  style={{ marginTop: '20px' }}
-                />
-                <Button
-                  onClick={() => handleDeleteChapter(chapter.id)}
-                  variant="contained"
-                  color="error"
-                  sx={{ marginTop: '20px', width: '150px' }}
-                >
-                  Delete Chapter
-                </Button>
-              </TabPanel>
-            ))}
-            <TabPanel key="new" value="new" sx={{ display: value === 'new' ? 'flex' : 'none', flexDirection: 'column' }}>
+            <TabPanel key={currentChapter.id} value={currentChapter.id}  sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="h1">Book Title</Typography>
               <TextField
                 label="Chapter Title"
-                value={newChapter.title}
-                onChange={handleNewChapterTitleChange}
+                value={editedCurrentChapter?.title || ''}
+                onChange={handleTitleChange}
                 sx={{ marginTop: '20px', width: '40%' }}
               />
               <TextField
                 label="Chapter Content"
                 multiline
                 rows={4}
-                value={newChapter.content}
-                onChange={handleNewChapterContentChange}
+                value={editedCurrentChapter?.content || ''}
+                onChange={handleContentChange}
                 sx={{ marginTop: '20px', width: '70%' }}
               />
+              <Typography  sx={{ marginTop: '20px' }}> Change Audio </Typography>
               <input
                 type="file"
                 accept="audio/*"
+                value={''}
                 onChange={handleAudioChange}
-                style={{ marginTop: '20px' }}
               />
               <Button
-                onClick={handleAddChapter}
+                onClick={handleDeleteChapter}
                 variant="contained"
-                color="primary"
+                color="error"
                 sx={{ marginTop: '20px', width: '150px' }}
               >
-                Add Chapter
+                Delete Chapter
               </Button>
-            </TabPanel>
-          </TabContext>
-          {isEditMode && (
-            <Box display="flex" flexDirection="row" padding="9px">
               <Button
                 onClick={handleSaveChanges}
                 variant="contained"
-                sx={{ ml: 2, width: '150px' }}
+                sx={{ marginTop: '20px', width: '150px' }}
               >
                 Save Changes
               </Button>
-            </Box>
-          )}
+            </TabPanel>
+          </TabContext>
           <Box display="flex" flexDirection="row" padding="9px">
             <RoundedButton
               text="< Prev Chapter"
               onClickFunction={handlePrevChapter}
               color="roundedButtonBlack"
-              disabled={currentChapterIndex === 0}
+              disabled={chapters.findIndex((chapter) => chapter.id === value) === 0}
             />
             <RoundedButton
               text="Next Chapter >"
               onClickFunction={handleNextChapter}
               color="roundedButtonBlack"
-              disabled={currentChapterIndex === chapters.length - 1}
+              disabled={chapters.findIndex((chapter) => chapter.id === value) === chapters.length - 1}
             />
           </Box>
         </Container>
-        {chapters.length > 0 && (
-          <AudioPlayer
-            audio_url={chapters[currentChapterIndex].audio_url}
-            duration={chapters[currentChapterIndex].duration}
-          />
-        )}
+        <AudioPlayer audio_url={currentChapter?.audio_url || ''} />
       </ThemeProvider>
     </StyledEngineProvider>
   );

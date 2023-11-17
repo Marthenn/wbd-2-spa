@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
+import { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -23,27 +23,66 @@ const Profile = () => {
   useEffect(() => {
     // Simulate fetching user data from an API
     const fetchUserData = async () => {
-      try {
-        const response = await fetch('YOUR_API_ENDPOINT'); // Replace with your API endpoint
-        const userData = await response.json();
-
-        // Update state with retrieved data
-        setUserPhoto(userData.userPhoto);
-        setUsername(userData.username);
-        setEmail(userData.email);
-      } catch (error) {
-        setUsername('admin#placeholder');
-        console.error('Error fetching user data:', error);
-      }
     };
 
     fetchUserData();
   }, []);
 
+  const validateEmail = (value: string) => {
+    if (!value || !/^\S+@\S+\.\S+$/.test(value)) {
+      setEmailError('Invalid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const validatePassword = (value: string) => {
+    if (!value || value.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const validateConfirmPassword = (value: string) => {
+    if (newPassword !== value) {
+      setConfirmPasswordError('Passwords do not match');
+    } else {
+      setConfirmPasswordError('');
+    }
+  };
+
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'email') {
+      validateEmail(value);
+      setNewEmail(value);
+    } else if (name === 'password') {
+      validatePassword(value);
+      setNewPassword(value);
+      validateConfirmPassword(newConfirmPassword);
+    } else if (name === 'confirmPassword') {
+      validateConfirmPassword(value);
+      setNewConfirmPassword(value);
+    } else if (name === 'username'){
+      if(!value){
+        setUsernameError('Username cannot be empty')
+      } else {
+        setUsernameError('')
+      }
+      setNewUsername(value);
+    }
+  };
   const [newUserPhoto, setNewUserPhoto] = useState<string>('');
   const [newUsername, setNewUsername] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
+  const [newConfirmPassword, setNewConfirmPassword] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');  
+  const [usernameError, setUsernameError] = useState<string>('');  
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -157,7 +196,8 @@ const Profile = () => {
                 />
               </Box>
             )}
-            <TextField
+            <form>
+              <TextField
               margin="normal"
               required
               fullWidth
@@ -167,7 +207,9 @@ const Profile = () => {
               id="email"
               autoComplete="email"
               value={newEmail ? newEmail : email}
-              onChange={(e) => setNewEmail(e.target.value)}
+              onChange={handleInputChange}
+              error={!!emailError}
+              helperText={emailError}
             />
             <TextField
               margin="normal"
@@ -179,19 +221,37 @@ const Profile = () => {
               id="username"
               autoComplete="username"
               value={newUsername ? newUsername : username}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={handleInputChange}
+              error={!!usernameError}
+              helperText={usernameError}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Change Password"
               type="password"
               id="password"
               autoComplete="password"
-              value={newPassword ? newPassword : password}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={newPassword}
+              onChange={handleInputChange}
+              error={!!passwordError}
+              helperText={passwordError}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="confirmPassword"
+              value={newConfirmPassword}
+              onChange={handleInputChange}
+              error={!!confirmPasswordError}
+              helperText={confirmPasswordError}
             />
             <Box
               sx={{
@@ -213,6 +273,7 @@ const Profile = () => {
             >
               Save Changes
             </Button>
+            </form>
             <Button
               onClick={handleLogout}
               variant="contained"

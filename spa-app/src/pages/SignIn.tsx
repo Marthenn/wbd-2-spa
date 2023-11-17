@@ -12,7 +12,7 @@ import theme from '../theme/theme';
 import logo from '../assets/logo.svg';
 import SignInImage from '../assets/SignIn.png';
 import CheckStatusDialog from '../components/CheckStatusDialog/CheckStatusDialog';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alerts from '../components/Alerts/Alerts';
 import { REST_BASE_URL } from '../constants/constants';

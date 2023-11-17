@@ -56,7 +56,7 @@ const CheckStatusDialog = ({
           value={formData.username} />
       </DialogContent>
       <DialogActions style={{ padding: 20 }}>
-        <Button variant="contained" color="primary" onClick={handleCheck}>
+        <Button variant="contained" color="primary" onClick={handleCheck} disabled={!formData.username}>
           Check
         </Button>
         <Button variant="contained" color="primary" onClick={handleClose}>

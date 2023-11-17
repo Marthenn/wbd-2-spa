@@ -5,7 +5,6 @@ import {
   CssBaseline,
   Container,
   Box,
-  Grid,
   Avatar,
   TextField,
   Button,
@@ -23,7 +22,6 @@ const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
 
@@ -43,14 +41,60 @@ const Profile = () => {
     setOpenPaymentDialog(false);
   };
 
+  const validateEmail = (value: string) => {
+    if (!value || !/^\S+@\S+\.\S+$/.test(value)) {
+      setEmailError('Invalid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const validatePassword = (value: string) => {
+    if (!value || value.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const validateConfirmPassword = (value: string) => {
+    if (newPassword !== value) {
+      setConfirmPasswordError('Passwords do not match');
+    } else {
+      setConfirmPasswordError('');
+    }
+  };
+
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'email') {
+      validateEmail(value);
+      setNewEmail(value);
+    } else if (name === 'password') {
+      validatePassword(value);
+      setNewPassword(value);
+      validateConfirmPassword(newConfirmPassword);
+    } else if (name === 'confirmPassword') {
+      validateConfirmPassword(value);
+      setNewConfirmPassword(value);
+    } else if (name === 'username'){
+      setNewUsername(value);
+    } else if (name === 'username'){
+      if(!value){
+        setUsernameError('Username cannot be empty')
+      } else {
+        setUsernameError('')
+      }
+      setNewUsername(value);
+    }
+  };
+  
   useEffect(() => {
-    // Simulate fetching user data from an API
     const fetchUserData = async () => {
       try {
-        const response = await fetch('YOUR_API_ENDPOINT'); // Replace with your API endpoint
+        const response = await fetch('YOUR_API_ENDPOINT');
         const userData = await response.json();
-
-        // Update state with retrieved data
         setUserPhoto(userData.userPhoto);
         setUsername(userData.username);
         setEmail(userData.email);
@@ -67,11 +111,18 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
+  const [newConfirmPassword, setNewConfirmPassword] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');  
+  const [usernameError, setUsernameError] = useState<string>('');
+
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // Add logic for form submission
+  
   };
+  
 
   const handlePhotoChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
@@ -193,6 +244,7 @@ const Profile = () => {
                 />
               </Box>
             )}
+            <form>
             <TextField
               margin="normal"
               required
@@ -203,7 +255,9 @@ const Profile = () => {
               id="email"
               autoComplete="email"
               value={newEmail ? newEmail : email}
-              onChange={(e) => setNewEmail(e.target.value)}
+              onChange={handleInputChange}
+              error={!!emailError}
+              helperText={emailError}
             />
             <TextField
               margin="normal"
@@ -215,20 +269,39 @@ const Profile = () => {
               id="username"
               autoComplete="username"
               value={newUsername ? newUsername : username}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={handleInputChange}
+              error={!!usernameError}
+              helperText={usernameError}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Change Password"
               type="password"
               id="password"
               autoComplete="password"
-              value={newPassword ? newPassword : password}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={newPassword}
+              onChange={handleInputChange}
+              error={!!passwordError}
+              helperText={passwordError}
             />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="confirmPassword"
+              value={newConfirmPassword}
+              onChange={handleInputChange}
+              error={!!confirmPasswordError}
+              helperText={confirmPasswordError}
+            />
+            </form>
             <Box
               sx={{
                 display: 'flex',

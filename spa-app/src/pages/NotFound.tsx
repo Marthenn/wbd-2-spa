@@ -1,4 +1,3 @@
-import * as React from 'react';
 import logo from '../assets/logo.svg';
 import BackgroundWave from '../assets/bg-wave.svg';
 
