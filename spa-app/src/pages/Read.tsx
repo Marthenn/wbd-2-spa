@@ -24,7 +24,7 @@ interface currentChapter {
   chapter_id: string;
   title: string;
   chapter_name: string;
-  transcript_directory: string;
+  transcript: string;
   audio_directory: string;
 }
 
@@ -137,7 +137,7 @@ const Read = () => {
             <TabPanel key={currentChapter.chapter_id} value={currentChapter.chapter_id.toString()}>
               <Typography variant="h1">{currentChapter.title}</Typography>
               <Typography variant="h2">{currentChapter.chapter_name}</Typography>
-              <Typography>{currentChapter.transcript_directory}</Typography>
+              <Typography>{currentChapter.transcript}</Typography>
             </TabPanel>
           </TabContext>
           <Box display="flex" flexDirection="row" padding="9px">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEventHandler } from 'react';
+import React, { useState, useEffect, ChangeEventHandler, useRef } from 'react';
 import {
   Button,
   Container,
@@ -21,7 +21,7 @@ interface Chapter {
   chapter_id: string;
   title: string;
   chapter_name: string;
-  transcript_directory: string;
+  transcript: string;
   audio_directory: string;
 }
 
@@ -29,6 +29,7 @@ const AddTranscript = () => {
   const { id } = useParams();
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [openAddAlert, setOpenAddAlert] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleChapterTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentChapter({
@@ -40,21 +41,24 @@ const AddTranscript = () => {
   const handleChapterContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentChapter({
       ...currentChapter!,
-      transcript_directory: event.target.value,
-    });
-  };
-
-  const handleChapterAudioChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newAudioUrl = e.target.value;
-    setCurrentChapter({
-      ...currentChapter!,
-      audio_directory: newAudioUrl,
+      transcript: event.target.value,
     });
   };
 
   const handleSaveChanges = async() => {
     try {
-      const response = await axios.post(`${REST_BASE_URL}api/book/details/${id}/chapter`);
+      const response = await axios({
+        method: 'post',
+        url: `${REST_BASE_URL}api/book/details/${id}/chapter`,
+        data: {
+            chapter_id: currentChapter?.chapter_id,
+            title: currentChapter?.title,
+            chapter_name: currentChapter?.chapter_name,
+            transcript: currentChapter?.transcript,
+            audio_directory: fileRef.current!.files![0],
+        }
+      });
+      
       if(response.data.message === 'success') {
         setOpenAddAlert(true);
       }
@@ -108,7 +112,7 @@ const AddTranscript = () => {
                 label="Chapter Content"
                 multiline
                 rows={4}
-                value={currentChapter?.transcript_directory || ''}
+                value={currentChapter?.transcript || ''}
                 onChange={handleChapterContentChange}
                 sx={{ marginTop: '20px', width: '70%' }}
               />
@@ -116,13 +120,14 @@ const AddTranscript = () => {
               <input
                 type="file"
                 accept="audio/*"
-                onChange={handleChapterAudioChange}
+                ref={fileRef}
               />
               <Button
                 onClick={handleSaveChanges}
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: '20px', width: '150px' }}
+                disabled={!currentChapter?.chapter_name || !currentChapter?.transcript || fileRef.current?.files!.length === 0}
               >
                 Add Chapter
               </Button>
