@@ -17,6 +17,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
+import { decodeToken, isExpired } from "react-jwt";
+import { getToken } from '../utils/token';
+import { useNavigate } from 'react-router-dom';
+
+const token = getToken();
+
+interface DecodedToken {
+  name: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
@@ -24,6 +36,21 @@ const Profile = () => {
   const [email, setEmail] = useState<string>('');
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
+  const navigate = useNavigate();
+  
+  // if (!token) {
+  //   throw new Error('No token found');
+  // }
+
+  // const decodedToken = decodeToken(token) as DecodedToken;
+  // const isMyTokenExpired = isExpired(token) as boolean;
+
+  // setUsername(decodedToken.name);
+
+  // if(isMyTokenExpired){
+  //   navigate('/SignIn')
+  // }
+
 
   const handleOpenCheckStatus = () => {
     setOpenCheckStatus(true);

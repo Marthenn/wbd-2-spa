@@ -42,19 +42,8 @@ const AudioBookDetails = () => {
   const [bookDetails, setBookDetails] = useState<BookDetails>();
   const { id } = useParams();
 
-  const data = {
-    title: 'Book Title',
-    cover_image_directory: '/img/cover-placeholder.png',
-    description: 'Book description',
-    author: 'Book Author',
-    category: 'Book Category',
-    duration: '02:30:00',
-    rating: 4.5,
-    audio_directory: audio_url,
-    bid: 1,
-  };
-
-  const [value, setValue] = useState<number | null>(data.rating);
+  const [ratingStatus, setRatingStatus] = useState<boolean>(false);
+  const [value, setValue] = useState<number | null>(0);
   const [isBookmarkAdded, setIsBookmarkAdded] = useState(false);
 
   const fetchDetails = async () => {
@@ -67,9 +56,37 @@ const AudioBookDetails = () => {
     }
   };
 
+  const fetchRatingStatus = async () => {
+    try {
+      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`);
+      console.log(response.data);
+      setRatingStatus(response.data.ratingStatus);
+    } catch (error) {
+      console.error('Error fetching rating status:', error);
+    }
+  };
+
+  const updateRating = async () => {
+    try {
+      if(ratingStatus) {
+        const response = await axios.put(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value});
+        console.log(response.data);
+      } else {
+        const response = await axios.post(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value});
+        console.log(response.data);
+      }  
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
+
   useEffect(() => {
-    fetchDetails();
+    fetchRatingStatus();
   }, []); 
+
+  useEffect(() => {
+    updateRating();
+  }, [value]); 
 
   const handleRead = () => {
     navigate(`/AudioBooks/${id}/Read`);
