@@ -19,6 +19,9 @@ import {
 import UploadProofDialog from "./PaymentSuccessDialog";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import theme from "../../theme/theme";
+import axios from "axios";
+import { REST_BASE_URL } from "../../constants/constants";
+import { getToken } from "../../utils/token";
 
 const PaymentDialog = ({
   open,
@@ -39,10 +42,26 @@ const PaymentDialog = ({
   const [uploadButtonDisabled, setUploadButtonDisabled] = useState(true);
   const [doneButtonDisabled, setDoneButtonDisabled] = useState(true);
 
-  const handleDoneButtonClick = () => {
+  const handleDoneButtonClick = async() => {
     if (formData.paymentProof) {
-      setShowPaymentSuccessDialog(true);
-      handleClose();
+      try {
+        const response = await axios({
+          method: 'post',
+          url: `${REST_BASE_URL}api/membership/create/request`,
+          data: {formData
+          },
+          headers: {
+              "Authorization": getToken()
+          }
+        });
+        
+        if(response.data.message === 'success') {
+          setShowPaymentSuccessDialog(true);
+          handleClose();
+        }
+      } catch (error) {
+        console.error('Error editing chapter:', error);
+      }
     } else {
       setDoneButtonDisabled(true);
     }
