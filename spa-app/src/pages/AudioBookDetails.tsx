@@ -56,6 +56,16 @@ const AudioBookDetails = () => {
     }
   };
 
+  const fetchFavoriteStatus = async () => {
+    try {
+      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`);
+      console.log(response.data);
+      setRatingStatus(response.data.ratingStatus);
+    } catch (error) {
+      console.error('Error fetching rating status:', error);
+    }
+  };
+
   const fetchRatingStatus = async () => {
     try {
       const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`);
@@ -81,7 +91,10 @@ const AudioBookDetails = () => {
   };
 
   useEffect(() => {
+    fetchFavoriteStatus();
     fetchRatingStatus();
+    fetchDetails();
+
   }, []); 
 
   useEffect(() => {

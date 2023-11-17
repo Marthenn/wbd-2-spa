@@ -14,6 +14,7 @@ import {
   import EditTranscript from "../pages/admin/EditTranscript.tsx"
   import SelectChapter from "../pages/admin/SelectChapter.tsx"
   import AddTranscript from "../pages/admin/AddTranscript.tsx"
+  import FavoriteBooks from "../pages/SavedBooks.tsx"
   import NotFound from "../pages/NotFound.tsx";
   
   export const router = createBrowserRouter([
@@ -48,6 +49,10 @@ import {
     {
       path: "/admin/EditTranscript/:id/Add",
       element: <AddTranscript/>
+    },
+    {
+      path: "/FavoriteBooks",
+      element: <FavoriteBooks/>
     },
     {
       path: "/admin/EditTranscript/:id/SelectChapter",

@@ -30,7 +30,7 @@ import {
     cover_image_directory: string;
   }
 
-  const AudioBooks = () => {
+  const FavoriteBooks = () => {
     const [books, setBooks] = React.useState<Book[]>([]);
     const [page, setPage] = React.useState(1);
     const [pageCount, setPageCount] = React.useState(1);
@@ -152,5 +152,5 @@ import {
     );
   };
   
-  export default AudioBooks;
+  export default FavoriteBooks;
   
