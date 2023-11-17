@@ -17,14 +17,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
-import { decodeToken, isExpired } from "react-jwt";
 import { getToken } from '../utils/token';
 import { useNavigate } from 'react-router-dom';
+import { decodeToken, isExpired } from 'react-jwt';
 
 const token = getToken();
 
 interface DecodedToken {
-  name: string;
+  uid: number;
+  isAdmin: boolean;
+  username: string;
+  profilePicDirectry: string;
   email: string;
   exp: number;
   iat: number;
@@ -37,19 +40,24 @@ const Profile = () => {
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
   const navigate = useNavigate();
-  
-  // if (!token) {
-  //   throw new Error('No token found');
-  // }
 
-  // const decodedToken = decodeToken(token) as DecodedToken;
-  // const isMyTokenExpired = isExpired(token) as boolean;
+  useEffect(() => {
+    if (!token) {
+      throw new Error('No token found');
+    }
 
-  // setUsername(decodedToken.name);
+    const decodedToken = decodeToken(token) as DecodedToken;
 
-  // if(isMyTokenExpired){
-  //   navigate('/SignIn')
-  // }
+    const isMyTokenExpired = isExpired(token) as boolean;
+
+    setUsername(decodedToken.username);
+    setEmail(decodedToken.email);
+    setUserPhoto(decodedToken.profilePicDirectry);
+
+    if(isMyTokenExpired){
+      navigate('/SignIn')
+    }
+  }, []);
 
 
   const handleOpenCheckStatus = () => {
@@ -117,22 +125,22 @@ const Profile = () => {
     }
   };
   
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('YOUR_API_ENDPOINT');
-        const userData = await response.json();
-        setUserPhoto(userData.userPhoto);
-        setUsername(userData.username);
-        setEmail(userData.email);
-      } catch (error) {
-        setUsername('admin#placeholder');
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await fetch('YOUR_API_ENDPOINT');
+  //       const userData = await response.json();
+  //       setUserPhoto(userData.userPhoto);
+  //       setUsername(userData.username);
+  //       setEmail(userData.email);
+  //     } catch (error) {
+  //       setUsername('admin#placeholder');
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+  //
+  //   fetchUserData();
+  // }, []);
 
   const [newUserPhoto, setNewUserPhoto] = useState<string>('');
   const [newUsername, setNewUsername] = useState<string>('');
