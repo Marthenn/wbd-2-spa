@@ -20,6 +20,7 @@ import {
   import RoundedButton from '../components/Button/RoundedButton';
   import axios from 'axios';  // Add this line
   import { REST_BASE_URL } from '../constants/constants';
+import {getToken} from "../utils/token.ts";
   
   interface Book {
     book_id: number;
@@ -42,7 +43,11 @@ import {
   
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/${page}/${searchQuery}`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/${page}/${searchQuery}`, {
+            headers: {
+                "Authorization": getToken()
+            }
+        });
         setBooks(response.data.books);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -51,7 +56,11 @@ import {
 
     const countPage = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/count/${searchQuery}`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/count/${searchQuery}`,{
+          headers: {
+            "Authorization": getToken()
+          }
+        });
         console.log(response);
         setPageCount(Math.ceil(response.data.bookCount/8))
         console.log(response.data.bookCount)
