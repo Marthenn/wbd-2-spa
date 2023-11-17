@@ -37,12 +37,12 @@ const SignIn = () => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const requestBody = {
-      username,
       password,
+      username,
     };
 
     try {
-      const response = await axios.post(`${REST_BASE_URL}/account/token`, requestBody);
+      const response = await axios.post(`${REST_BASE_URL}api/account/token`, requestBody);
 
       if (!response.data.token) {
         setOpenAlert(true);
