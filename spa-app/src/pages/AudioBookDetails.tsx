@@ -20,7 +20,6 @@ import StarIcon from '@mui/icons-material/Star';
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import audio_url from '../../2.mp3'
 import { Link } from 'react-router-dom';
 import { REST_BASE_URL } from '../constants/constants';
 import axios from 'axios';
