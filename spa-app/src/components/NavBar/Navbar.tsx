@@ -32,7 +32,7 @@ const Navbar = ({
   if (category === 'user') {
     menuItems = [
       ['Audio Books', '/AudioBooks'],
-      ['Saved Books', '/SavedBooks'],
+      ['Favorite Books', '/FavoriteBooks'],
     ];
   } else if (category === 'admin') {
     menuItems = [
