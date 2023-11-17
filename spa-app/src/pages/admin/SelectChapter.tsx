@@ -33,14 +33,14 @@ interface ChapterRow {
 
 const SelectChapter = () => {
   const [rows, setRows] = useState<ChapterRow[]>();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChapterList = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/chapternames/${page}`, {headers: {
+        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapternames/${page}`, {headers: {
             "Authorization": getToken()}});
         setRows(response.data.chapterDetails[0]);
       } catch (error) {

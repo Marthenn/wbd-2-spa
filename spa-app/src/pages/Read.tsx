@@ -64,7 +64,8 @@ const Read = () => {
     const fetchChapter = async () => {
       try {
         if (value !== null) {
-          const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${value}`);
+          const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${value}`, {headers: {
+            "Authorization": getToken()}});
           setCurrentChapter(response.data.chapterDetails[0]);
         }
       } catch (error) {

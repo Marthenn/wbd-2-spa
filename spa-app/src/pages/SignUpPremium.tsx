@@ -45,7 +45,7 @@ const SignUpPremium = () => {
       if (tierTitle === 'Premium') {
         handleOpen();
       } else {
-        window.location.href = 'https://youtube.com';
+        window.location.href = 'localhost:80/public/';
       }
     };
 
