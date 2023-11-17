@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent, ChangeEventHandler } from 'react';
+import { useState, useEffect, SyntheticEvent, ChangeEventHandler, useRef } from 'react';
 import {
   ThemeProvider,
   StyledEngineProvider,
@@ -13,19 +13,50 @@ import {
 import theme from '../../theme/theme';
 import Navbar from '../../components/NavBar/Navbar';
 import EditIcon from '@mui/icons-material/Edit';
+import { clearToken, getToken } from '../../utils/token';
+import { decodeToken, isExpired } from 'react-jwt';
+import { useNavigate } from 'react-router-dom';
+import { REST_BASE_URL } from '../../constants/constants';
+import axios from 'axios';
+
+const token = getToken();
+
+interface DecodedToken {
+  uid: number;
+  isAdmin: boolean;
+  username: string;
+  profilePicDirectry: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
 
 const Profile = () => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [uid, setUid] = useState<number>(0);
   const [password, setPassword] = useState<string>('');
+  const navigate = useNavigate();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Simulate fetching user data from an API
-    const fetchUserData = async () => {
-    };
+    if (!token) {
+      throw new Error('No token found');
+    }
 
-    fetchUserData();
+    const decodedToken = decodeToken(token) as DecodedToken;
+
+    const isMyTokenExpired = isExpired(token) as boolean;
+
+    setUsername(decodedToken.username);
+    setEmail(decodedToken.email);
+    setUserPhoto(decodedToken.profilePicDirectry);
+    setUid(decodedToken.uid);
+
+    if(isMyTokenExpired){
+      navigate('/SignIn')
+    }
   }, []);
 
   const validateEmail = (value: string) => {
@@ -84,9 +115,26 @@ const Profile = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');  
   const [usernameError, setUsernameError] = useState<string>('');  
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    // Add logic for form submission
+  const handleSubmit = async() => {
+    try {
+      const response = await axios({
+        method: 'put',
+        url: `${REST_BASE_URL}/account/details/${uid}`,
+        data: {
+            uid: uid,
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+            profilePicDirectory: newUserPhoto,
+
+        },
+        headers: {
+            "Authorization": getToken()
+        }
+      });
+    } catch (error) {
+      console.error('Error editing chapter:', error);
+    }
   };
 
   const handlePhotoChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -103,7 +151,8 @@ const Profile = () => {
   };
 
   function handleLogout(_e: SyntheticEvent<Element, Event>): void {
-    throw new Error('Function not implemented.');
+    clearToken();
+    navigate('/SignIn');
   }
 
   return (
@@ -160,6 +209,7 @@ const Profile = () => {
                   type="file"
                   id="fileInput"
                   accept="image/*"
+                  ref={fileRef}
                   onChange={handlePhotoChange}
                   style={{ display: 'none' }}
                 />

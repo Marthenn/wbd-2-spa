@@ -17,9 +17,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoundedButton from '../components/Button/RoundedButton';
 import PaymentDialog from '../components/MembershipRequestDialog/PaymentDialog';
 import StatusDialog from '../components/CheckStatusDialog/StatusDialog';
-import { getToken } from '../utils/token';
+import { clearToken, getToken } from '../utils/token';
 import { useNavigate } from 'react-router-dom';
 import { decodeToken, isExpired } from 'react-jwt';
+import { REST_BASE_URL } from '../constants/constants';
+import axios from 'axios';
 
 const token = getToken();
 
@@ -39,6 +41,7 @@ const Profile = () => {
   const [email, setEmail] = useState<string>('');
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [openCheckStatus, setOpenCheckStatus] = useState(false);
+  const [uid, setUid] = useState<number>(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +56,7 @@ const Profile = () => {
     setUsername(decodedToken.username);
     setEmail(decodedToken.email);
     setUserPhoto(decodedToken.profilePicDirectry);
+    setUid(decodedToken.uid);
 
     if(isMyTokenExpired){
       navigate('/SignIn')
@@ -153,10 +157,28 @@ const Profile = () => {
   const [usernameError, setUsernameError] = useState<string>('');
 
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-  
+  const handleSubmit = async() => {
+    try {
+      const response = await axios({
+        method: 'put',
+        url: `${REST_BASE_URL}/account/details/${uid}`,
+        data: {
+            uid: uid,
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+            profilePicDirectory: newUserPhoto,
+
+        },
+        headers: {
+            "Authorization": getToken()
+        }
+      });
+    } catch (error) {
+      console.error('Error editing chapter:', error);
+    }
   };
+
   
 
   const handlePhotoChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -173,7 +195,8 @@ const Profile = () => {
   };
 
   function handleLogout(_e: SyntheticEvent<Element, Event>): void {
-    throw new Error('Function not implemented.');
+    clearToken();
+    navigate('/SignIn');
   }
 
   return (
