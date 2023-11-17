@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEventHandler } from 'react';
+import React, { useState, useEffect, ChangeEventHandler, useRef } from 'react';
 import {
   Button,
   Container,
@@ -21,7 +21,7 @@ interface Chapter {
   chapter_id: string;
   title: string;
   chapter_name: string;
-  transcript_directory: string;
+  transcript: string;
   audio_directory: string;
 }
 
@@ -30,6 +30,7 @@ const EditTranscript = () => {
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openEditAlert, setOpenEditAlert] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -54,7 +55,7 @@ const EditTranscript = () => {
   const handleChapterContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentChapter({
       ...currentChapter!,
-      transcript_directory: event.target.value,
+      transcript: event.target.value,
     });
   };
 
@@ -78,14 +79,17 @@ const EditTranscript = () => {
   };
 
   const handleSaveChanges = async() => {
-    try {
-      const response = await axios.put(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
-      if(response.data.message === 'success') {
-        setOpenEditAlert(true);
+    const response = await axios({
+      method: 'put',
+      url: `${REST_BASE_URL}api/book/details/${id}/chapter`,
+      data: {
+          chapter_id: currentChapter?.chapter_id,
+          title: currentChapter?.title,
+          chapter_name: currentChapter?.chapter_name,
+          transcript: currentChapter?.transcript,
+          audio_directory: fileRef.current!.files![0],
       }
-    } catch (error) {
-      console.error('Error editing chapter:', error);
-    }
+    });
   };  
 
   const handleDeleteAlertClose = (
@@ -144,7 +148,7 @@ const EditTranscript = () => {
                 label="Chapter Content"
                 multiline
                 rows={4}
-                value={currentChapter?.transcript_directory || ''}
+                value={currentChapter?.transcript || ''}
                 onChange={handleChapterContentChange}
                 sx={{ marginTop: '20px', width: '70%' }}
               />
@@ -152,14 +156,15 @@ const EditTranscript = () => {
               <input
                 type="file"
                 accept="audio/*"
-                onChange={handleChapterAudioChange}
+                ref={fileRef}
+                value={currentChapter?.audio_directory || ''}
               />
               <Button
                 onClick={handleSaveChanges}
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: '20px', width: '150px' }}
-                disabled={!currentChapter?.chapter_name || !currentChapter?.transcript_directory || !currentChapter?.audio_directory}
+                disabled={!currentChapter?.chapter_name || !currentChapter?.transcript || fileRef.current?.files!.length === 0}
               >
                 Save Changes
               </Button>
