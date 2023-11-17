@@ -194,8 +194,8 @@ const Profile = () => {
         >
           <PaymentDialog
             formData={{
-              username: "user#placeholder", // dari session
-              email: "email#placeholder",
+              username: username, // dari session
+              email: email,
               paymentProof: null,
             }}
             open={openPaymentDialog}
