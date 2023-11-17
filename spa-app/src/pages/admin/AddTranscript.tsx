@@ -123,6 +123,7 @@ const AddTranscript = () => {
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: '20px', width: '150px' }}
+                disabled={!currentChapter?.chapter_name || !currentChapter?.transcript_directory || !currentChapter?.audio_directory}
               >
                 Add Chapter
               </Button>
