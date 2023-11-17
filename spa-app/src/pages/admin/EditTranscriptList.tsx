@@ -17,6 +17,7 @@ import RoundedButton from '../../components/Button/RoundedButton';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';  // Add this line
 import { REST_BASE_URL } from '../../constants/constants';
+import { getToken } from '../../utils/token';
 
 interface Book {
   book_id: number;
@@ -38,7 +39,8 @@ const EditTranscriptList = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/${page}`);
+      const response = await axios.get(`${REST_BASE_URL}api/book/${page}`, {headers: {
+        "Authorization": getToken()}});
       setBooks(response.data.books);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -47,7 +49,8 @@ const EditTranscriptList = () => {
 
   const countPage = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/count`);
+      const response = await axios.get(`${REST_BASE_URL}api/book/count`, {headers: {
+        "Authorization": getToken()}});
       console.log(response);
       setPageCount(Math.ceil(response.data.bookCount.bookCount/8))
       console.log(response.data.bookCount)

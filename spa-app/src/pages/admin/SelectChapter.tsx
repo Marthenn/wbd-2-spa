@@ -24,6 +24,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { REST_BASE_URL } from '../../constants/constants';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import axios from 'axios';
+import { getToken } from '../../utils/token';
 
 interface ChapterRow {
     chapterId: number;
@@ -39,7 +40,8 @@ const SelectChapter = () => {
   useEffect(() => {
     const fetchChapterList = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/chapternames/${page}`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/chapternames/${page}`, {headers: {
+            "Authorization": getToken()}});
         setRows(response.data.chapterDetails[0]);
       } catch (error) {
         console.error('Error fetching books:', error);

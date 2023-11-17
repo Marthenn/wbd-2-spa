@@ -16,6 +16,7 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { REST_BASE_URL } from '../../constants/constants';
 import Alerts from '../../components/Alerts/Alerts';
 import axios from 'axios';
+import { getToken } from '../../utils/token';
 
 interface Chapter {
   chapter_id: string;
@@ -35,7 +36,9 @@ const EditTranscript = () => {
   useEffect(() => {
     const fetchChapter = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`, {headers: {
+          "Authorization": getToken()}
+      });
         setCurrentChapter(response.data.chapterDetails[0]);
       } catch (error) {
         console.error('Error fetching chapter:', error);
@@ -59,17 +62,9 @@ const EditTranscript = () => {
     });
   };
 
-  const handleChapterAudioChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newAudioUrl = e.target.value;
-    setCurrentChapter({
-      ...currentChapter!,
-      audio_directory: newAudioUrl,
-    });
-  };
-
   const handleDeleteChapter = async() => {
     try {
-      const response = await axios.delete(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`);
+      const response = await axios.delete(`${REST_BASE_URL}api/book/details/${id}/chapter/${chapterId}`,);
       if(response.data.message === 'success') {
         setOpenDeleteAlert(true);
       }
@@ -88,8 +83,14 @@ const EditTranscript = () => {
           chapter_name: currentChapter?.chapter_name,
           transcript: currentChapter?.transcript,
           audio_directory: fileRef.current!.files![0],
+      },
+      headers: {
+        "Authorization": getToken()
       }
     });
+    if(response.data.message === 'success') {
+      setOpenEditAlert(true);
+    }
   };  
 
   const handleDeleteAlertClose = (

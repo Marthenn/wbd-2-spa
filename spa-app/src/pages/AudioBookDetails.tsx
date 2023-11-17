@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom';
 import { REST_BASE_URL } from '../constants/constants';
 import axios from 'axios';
 import { convertTimeToMinutes } from '../utils/formatTime';
+import { getToken } from '../utils/token';
 
 interface BookDetails {
   title: string;
@@ -48,7 +49,11 @@ const AudioBookDetails = () => {
 
   const fetchDetails = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}`);
+      const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}`
+      ,{ headers: {
+         "Authorization": getToken()
+       }}
+      );
       console.log(response.data);
       setBookDetails(response.data.bookDetails);
     } catch (error) {
@@ -58,7 +63,11 @@ const AudioBookDetails = () => {
 
   const fetchFavoriteStatus = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`);
+      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`,
+      { headers: {
+        "Authorization": getToken()
+      }}
+      );
       console.log(response.data);
       setRatingStatus(response.data.ratingStatus);
     } catch (error) {
@@ -68,7 +77,11 @@ const AudioBookDetails = () => {
 
   const fetchRatingStatus = async () => {
     try {
-      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`);
+      const response = await axios.get(`${REST_BASE_URL}api/book/rating/:uid/${id}`,
+      { headers: {
+        "Authorization": getToken()
+      }}
+      );
       console.log(response.data);
       setRatingStatus(response.data.ratingStatus);
     } catch (error) {
@@ -79,10 +92,16 @@ const AudioBookDetails = () => {
   const updateRating = async () => {
     try {
       if(ratingStatus) {
-        const response = await axios.put(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value});
+        const response = await axios.put(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value}, 
+        { headers: {
+          "Authorization": getToken()
+        }});
         console.log(response.data);
       } else {
-        const response = await axios.post(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value});
+        const response = await axios.post(`${REST_BASE_URL}api/book/rating/:uid/${id}`, {rating: value}, 
+        { headers: {
+          "Authorization": getToken()
+        }});
         console.log(response.data);
       }  
     } catch (error) {

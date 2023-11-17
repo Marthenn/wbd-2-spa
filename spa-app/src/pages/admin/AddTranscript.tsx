@@ -16,6 +16,7 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { REST_BASE_URL } from '../../constants/constants';
 import Alerts from '../../components/Alerts/Alerts';
 import axios from 'axios';
+import { getToken } from '../../utils/token';
 
 interface Chapter {
   chapter_id: string;
@@ -56,6 +57,9 @@ const AddTranscript = () => {
             chapter_name: currentChapter?.chapter_name,
             transcript: currentChapter?.transcript,
             audio_directory: fileRef.current!.files![0],
+        },
+        headers: {
+            "Authorization": getToken()
         }
       });
       

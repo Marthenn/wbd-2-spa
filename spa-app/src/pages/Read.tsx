@@ -19,6 +19,7 @@ import AudioPlayer from '../components/AudioPlayer/AudioPlayer';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import axios from 'axios';
 import { REST_BASE_URL } from '../constants/constants';
+import { getToken } from '../utils/token';
 
 interface currentChapter {
   chapter_id: string;
@@ -42,7 +43,8 @@ const Read = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapternames`);
+        const response = await axios.get(`${REST_BASE_URL}api/book/details/${id}/chapternames`, {headers: {
+          "Authorization": getToken()}});
         setChapters(response.data.chapterNames);
 
         if (response.data.chapterNames.length > 0) {
